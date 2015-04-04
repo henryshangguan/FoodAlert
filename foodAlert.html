@@ -1,0 +1,49 @@
+<head>
+  <title>foodAlert</title>
+</head>
+
+<body>
+  <h1>Princeton FoodAlert</h1>
+
+  {{> form}}
+</body>
+
+<template name="hello">
+  <button>Click Me</button>
+  <p>You've pressed the button {{counter}} times.</p>
+</template>
+
+<template name="form">
+
+<form class="add-favorite">
+Dining Hall<br>
+<select>
+	<option value="Forbes"></option>
+	<option value="Rocky/Mathey"></option>
+	<option value="Whitman"></option>
+	<option value="Wu/Wilcox"></option>
+	<option value="All"></option>
+</select>
+<br>
+
+Menu Item<br>
+<input type="text" name="menuItem" placeholder="Menu Item">
+<br>
+Phone Number<br>
+<input type="text" name="phoneNumber">
+<br>
+Pin<br>
+<input type="text" name="pin">
+<br>
+
+<button class="submit">Submit</button>
+
+
+</form>
+
+
+
+
+</template>
+
+
