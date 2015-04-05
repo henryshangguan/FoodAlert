@@ -7,43 +7,56 @@ src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
 <body>
   <h1>Princeton FoodAlert!!</h1>
 
-  {{> form}}
-</body>
+  {{> newUser}}
+  {{> addFoodForm}}
+  <ul>  {{#each users}}
+  	{{> test}}
+  	{{/each}} </ul>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template>
-
-<template name="form">
-
-<form class="add-favorite">
-Dining Hall<br>
-<select>
-	<option value="Forbes"></option>
-	<option value="Rocky/Mathey"></option>
-	<option value="Whitman"></option>
-	<option value="Wu/Wilcox"></option>
-	<option value="All"></option>
-</select>
-<br>
-
-<input type="text" name="menuItem" placeholder="Menu Item">
-<br>
-<input type="text" name="phoneNumber" placeholder="Phone Number">
-<br>
-<input type="text" name="pin" placeholder="PIN">
-<br>
-
+<<<<<<< HEAD
 <button class="submit">Submit</button>
 
 <button class="sendPin">Send Random Pin</button>
 
 </form>
+=======
+</body>
+>>>>>>> 3022e0f958ba7842422d6e230b513ccb05d8f469
 
+<template name="addFoodForm">
 
+	<form class="add-favorite">
+		Dining Hall<br>
+		<select name="dhall">
+			<option value="Select Dining Hall"></option>
+			<option value="Forbes"></option>
+			<option value="Rocky/Mathey"></option>
+			<option value="Whitman"></option>
+			<option value="Wu/Wilcox"></option>
+			<option value="All"></option>
+		</select>
+		<br>
 
+		<input type="text" name="menuItem" placeholder="Menu Item">
+		<br>
+		<input type="text" name="phoneNumber" placeholder="Phone Number">
+		<br>
+		<input type="text" name="pin" placeholder="PIN">
+		<br>
 
+		<input type="submit" value="Add Food">
+	</form>
+
+</template>
+
+<template name="newUser">
+	<form class="add-new-user">
+		<input type="submit" value="New User">
+	</form>
+</template>
+
+<template name="test">
+	<span class="text">{{number}} - {{request}}</span>
 </template>
 
 
