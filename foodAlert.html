@@ -5,42 +5,48 @@
 <body>
   <h1>Princeton FoodAlert!!</h1>
 
-  {{> form}}
+  {{> newUser}}
+  {{> addFoodForm}}
+  <ul>  {{#each users}}
+  	{{> test}}
+  	{{/each}} </ul>
+
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="addFoodForm">
+
+	<form class="add-favorite">
+		Dining Hall<br>
+		<select name="dhall">
+			<option value="Select Dining Hall"></option>
+			<option value="Forbes"></option>
+			<option value="Rocky/Mathey"></option>
+			<option value="Whitman"></option>
+			<option value="Wu/Wilcox"></option>
+			<option value="All"></option>
+		</select>
+		<br>
+
+		<input type="text" name="menuItem" placeholder="Menu Item">
+		<br>
+		<input type="text" name="phoneNumber" placeholder="Phone Number">
+		<br>
+		<input type="text" name="pin" placeholder="PIN">
+		<br>
+
+		<input type="submit" value="Add Food">
+	</form>
+
 </template>
 
-<template name="form">
+<template name="newUser">
+	<form class="add-new-user">
+		<input type="submit" value="New User">
+	</form>
+</template>
 
-<form class="add-favorite">
-Dining Hall<br>
-<select>
-	<option value="Forbes"></option>
-	<option value="Rocky/Mathey"></option>
-	<option value="Whitman"></option>
-	<option value="Wu/Wilcox"></option>
-	<option value="All"></option>
-</select>
-<br>
-
-<input type="text" name="menuItem" placeholder="Menu Item">
-<br>
-<input type="text" name="phoneNumber" placeholder="Phone Number">
-<br>
-<input type="text" name="pin" placeholder="PIN">
-<br>
-
-<button class="submit">Submit</button>
-
-
-</form>
-
-
-
-
+<template name="test">
+	<span class="text">{{number}} - {{request}}</span>
 </template>
 
 
