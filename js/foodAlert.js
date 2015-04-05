@@ -4,9 +4,7 @@ Menus = new Mongo.Collection("menus");
 Records = new Mongo.Collection("records");
 
 if (Meteor.isClient) {
-<<<<<<< HEAD
 	//var twilio = require('twilio');
-=======
   Meteor.subscribe("users");
   Meteor.subscribe("requests");
   Meteor.subscribe("menus");
@@ -25,7 +23,6 @@ if (Meteor.isClient) {
       event.target.menuItem.value = "";
       event.target.dhall.value = "Select Dining Hall";
 
->>>>>>> 3022e0f958ba7842422d6e230b513ccb05d8f469
 
       Meteor.call("addUser", number, pin);
       Meteor.call("addRequest", number, request);
@@ -47,7 +44,6 @@ if (Meteor.isClient) {
     }
   });
 
-<<<<<<< HEAD
     },
 
     "click .sendPin": function () {
@@ -56,19 +52,16 @@ if (Meteor.isClient) {
     	// now put pin in a state variable or something so that verify function can use it
     },
 
-=======
   Template.body.helpers({
     users: function () {
       return Requests.find({}, {sort: {createdAt: -1}});
     }
->>>>>>> 3022e0f958ba7842422d6e230b513ccb05d8f469
   });
 }
 
 
 
 if (Meteor.isServer) {
-<<<<<<< HEAD
 	Meteor.methods({
 		sendSMS: function (pin) {
 			Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
@@ -85,7 +78,6 @@ if (Meteor.isServer) {
 	});
 
 }
-=======
   Meteor.startup(function () {
     // code to run on server at startup
   });
@@ -106,4 +98,3 @@ Meteor.methods({
     });
   }
 });
->>>>>>> 3022e0f958ba7842422d6e230b513ccb05d8f469
