@@ -7,9 +7,6 @@
 meteor-platform
 autopublish
 insecure
-<<<<<<< HEAD
 http
-=======
 mizzao:bootboxjs
 mizzao:bootstrap-3
->>>>>>> 3022e0f958ba7842422d6e230b513ccb05d8f469
