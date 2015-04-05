@@ -41,9 +41,6 @@ if (Meteor.isClient) {
             Example.show("Verification sent.");
           }                      
       });
-    }
-  });
-
     },
 
     "click .sendPin": function () {
@@ -57,7 +54,7 @@ if (Meteor.isClient) {
       return Requests.find({}, {sort: {createdAt: -1}});
     }
   });
-}
+});
 
 
 
