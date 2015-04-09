@@ -1,6 +1,10 @@
 Menus = new Mongo.Collection("Menus");
 Records = new Mongo.Collection("Records");
 
+ Router.map(function(){
+  this.route('test', {path: '/cool'});
+ });
+
 if (Meteor.isClient) {
 	Schemas = {};
 	Template.registerHelper("Schemas", Schemas);
