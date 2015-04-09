@@ -8,29 +8,30 @@ if (Meteor.isClient) {
 	var Collections = {};
 	Template.registerHelper("Collections", Collections);
 
-
-	PendingRequests = Collections.PendingRequests = new Mongo.Collection("PendingRequests");
-	ConfirmedRequests = Collections.ConfirmedRequests = new Mongo.Collection("ConfirmedRequests");
+  PendingRequests = Collections.PendingRequests = new Mongo.Collection("PendingRequests");
+  ConfirmedRequests = Collections.ConfirmedRequests = new Mongo.Collection("ConfirmedRequests");
 
 	Meteor.subscribe("ConfirmedRequests");
 	Meteor.subscribe("PendingRequests");
 	Meteor.subscribe("Menus");
 	Meteor.subscribe("Records");
 
-	Schemas.Request = new SimpleSchema({
-		requests: {
-			type: Array,
-			optional: true
-		},
-		'requests.$': {
+	Schemas.PendingRequest = new SimpleSchema({
+		number : {
+      type: String,
+      label: "Phone Number",
+      min: 10,
+      max: 10
+    },
+    request: {
 			type: Object
 		},
-		'requests.$.food': {
+		'request.food': {
 			type: String,
 			label: "Food",
 			max: 40 
 		},
-		'requests.$.location': {
+		'request.location': {
 			type: String,
 			label: "Dining Hall",
 			allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
@@ -43,17 +44,46 @@ if (Meteor.isClient) {
 				{label: "Wu/Wilcox", value: "Wu/Wilcox"}
 				]
 			}
-		},
-		'requests.$.number': {
-			type: String,
-			label: "Phone Number",
-			min: 10,
-			max: 10
-		}
+		} 
 	});
 
-	PendingRequests.attachSchema(Schemas.Request);
-	ConfirmedRequests.attachSchema(Schemas.Request);
+  Schemas.ConfirmedRequest = new SimpleSchema({
+    number: {
+      type: String,
+      label: "Phone Number",
+      min: 10,
+      max: 10
+    },
+    requests: {
+      type: Array,
+      optional: true
+    },
+    'requests.$': {
+      type: Object
+    },
+    'requests.$.food': {
+      type: String,
+      label: "Food",
+      max: 40 
+    },
+    'requests.$.location': {
+      type: String,
+      label: "Dining Hall",
+      allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
+      autoform: {
+        options: [
+        {label: "Center for Jewish Life", value: "Center for Jewish Life"},
+        {label: "Forbes", value: "Forbes"},
+        {label: "Rocky/Mathey", value: "Rocky/Mathey"},
+        {label: "Whitman", value: "Whitman"},
+        {label: "Wu/Wilcox", value: "Wu/Wilcox"}
+        ]
+      }
+    }
+  });
+
+	PendingRequests.attachSchema(Schemas.PendingRequest);
+	ConfirmedRequests.attachSchema(Schemas.ConfirmedRequest);
 
 	// Meteor.publish("Collections.PendingRequests", function () {
 	// 	return PendingRequests.find();
@@ -100,9 +130,22 @@ Template.body.helpers({
 	}
 });
 
+Template.form.events({
+  'submit ' : function () {
+    console.log("hello");
+    var number = AutoForm.getFieldValue("number", "form");
+    var food = AutoForm.getFieldValue("request.food", "form");
+    var location = AutoForm.getFieldValue("request.location", "form");
+    console.log(number);
+    console.log(food);
+    console.log(location);
+    Meteor.call("sendSMS", number, food, location);
+  }
+})
 }
 
 if (Meteor.isServer) {
+  
 	/********** UPDATING MENUS DAILY *******/
 	var getMenus = function () {
 		Meteor.http.get('https://api.parse.com/1/classes/Menu', {
@@ -176,31 +219,19 @@ if (Meteor.isServer) {
 	/***************************/
 
 
-	Meteor.methods({
-		testMenus: function() {
-			getMenus();
-		},
-		// sendSMS: function (pin, number) {
-		// 	Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
-  //     {
-  //      params:{From:'+16098794415', To: number, Body: 'Here is your pin: ' + pin},
-  //      auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
-  //      headers: {'content-type':'application/x-www-form-urlencoded'}
-  //    }, function () {
-  //      console.log(arguments)
-  //    });
-		// },
 
-  //   sendSMS: function (pin) {
-  //     Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
-  //       {
-  //         params:{From:'+16098794415', To:'+16095539543', Body: 'Here is your pin: ' + pin},
-  //         auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
-  //         headers: {'content-type':'application/x-www-form-urlencoded'}
-  //       }, function () {
-  //         console.log(arguments)
-  //       }
-  //     );
-  //   }
+Meteor.methods({
+    sendSMS: function (number, food, location) {
+      Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
+      {
+       params:{From:'+16098794415', To: number, Body: 'Food: ' + food + 'Location: ' + location},
+       auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
+       headers: {'content-type':'application/x-www-form-urlencoded'}
+     }, function () {
+       console.log(arguments)
+     });
+    },
+
+
 });
 }
