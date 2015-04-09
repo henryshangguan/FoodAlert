@@ -8,9 +8,6 @@ if (Meteor.isClient) {
 	var Collections = {};
 	Template.registerHelper("Collections", Collections);
 
-	Requests = Collections.Requests = new Mongo.Collection("Requests");
-
-<<<<<<< HEAD
   PendingRequests = Collections.PendingRequests = new Mongo.Collection("PendingRequests");
   ConfirmedRequests = Collections.ConfirmedRequests = new Mongo.Collection("ConfirmedRequests");
 
