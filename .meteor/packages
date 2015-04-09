@@ -16,3 +16,4 @@ aldeed:collection2
 autopublish
 mrt:cron
 iron:router
+mrt:twilio

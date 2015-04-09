@@ -1,11 +1,14 @@
 Menus = new Mongo.Collection("Menus");
 Records = new Mongo.Collection("Records");
 
- Router.map(function(){
-  this.route('test', {path: '/cool'});
- });
+
 
 if (Meteor.isClient) {
+  Router.route('/response/:someValue', function () {
+  console.log(params.someValue);
+  },
+  {where: 'server'});
+
 	Schemas = {};
 	Template.registerHelper("Schemas", Schemas);
 
@@ -151,6 +154,10 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
+  Router.route('/response/:someValue', function () {
+  console.log(params.someValue);
+  },
+  {where: 'server'});
 
 	/********** UPDATING MENUS DAILY *******/
 	var getMenus = function () {
