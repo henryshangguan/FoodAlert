@@ -1,18 +1,78 @@
-Users = new Mongo.Collection("users");
-Requests = new Mongo.Collection("requests");
-Menus = new Mongo.Collection("menus");
-Records = new Mongo.Collection("records");
+Menus = new Mongo.Collection("Menus");
+Records = new Mongo.Collection("Records");
+
 
 if (Meteor.isClient) {
-	Meteor.subscribe("users");
-	Meteor.subscribe("requests");
-	Meteor.subscribe("menus");
-	Meteor.subscribe("records");
+	Schemas = {};
+	Template.registerHelper("Schemas", Schemas);
+
+	var Collections = {};
+	Template.registerHelper("Collections", Collections);
+
+	Requests = Collections.Requests = new Mongo.Collection("Requests");
+
+	Meteor.subscribe("Requests");
+	Meteor.subscribe("Menus");
+	Meteor.subscribe("Records");
+
+	Schemas.Request = new SimpleSchema({
+		requests: {
+			type: Array,
+			optional: true
+		},
+		'requests.$': {
+			type: Object
+		},
+		'requests.$.food': {
+			type: String,
+			label: "Food",
+			max: 40 
+		},
+		'requests.$.location': {
+			type: String,
+			label: "Dining Hall",
+			allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
+			autoform: {
+				options: [
+				{label: "Center for Jewish Life", value: "Center for Jewish Life"},
+				{label: "Forbes", value: "Forbes"},
+				{label: "Rocky/Mathey", value: "Rocky/Mathey"},
+				{label: "Whitman", value: "Whitman"},
+				{label: "Wu/Wilcox", value: "Wu/Wilcox"}
+				]
+			}
+		},
+		'requests.$.number': {
+			type: String,
+			label: "Phone Number",
+			min: 10,
+			max: 10
+		}
+	});
+
+	Requests.attachSchema(Schemas.Request);
+
+
+
+	//Meteor.publish("Collections.Requests2", function () {
+	//  return Requests2.find();
+	//});
+
+	Requests.allow({
+		update: function () {
+			return true;
+		}
+	});
+
 
 	Template.body.events({
 
-
+		"click .sendPin": function () {
+			var pin = Math.round(Math.random() * 1000);
+			Meteor.call("sendSMS", pin);
+		},
 	});
+
 
 	Template.addFoodForm.events({
 		'submit form' : function () {
@@ -27,49 +87,37 @@ if (Meteor.isClient) {
 			event.target.menuItem.value = "";
 			event.target.dhall.value = "Select Dining Hall";
 
-
-			Meteor.call("addUser", number, pin);
 			Meteor.call("addRequest", number, request);
+			Meteor.call("addUser", number, pin);
 
 			bootbox.alert("Your request has been saved");
 		}
 	});
 
-	Template.newUser.events({
-		'submit form' : function () {
-			event.preventDefault();
-			bootbox.prompt("Enter your phone number:", function(result) {                                                           
-				if (result === null) {
-
-				} else {
-					Example.show("Verification sent.");
-				}                      
-			});
-		},
-
-	});
 
 	Template.body.helpers({
 		users: function () {
 			return Requests.find({}, {sort: {createdAt: -1}});
+		},
+		exampleDoc: function () {
+			return Requests.findOne();
 		}
 	});
 }
 
 if (Meteor.isServer) {
-
 	/********** UPDATING MENUS DAILY *******/
 	var getMenus = function () {
 		Meteor.http.get('https://api.parse.com/1/classes/Menu', {
 			headers: {'content-type': 'application/json',
-				'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
-				'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
-			}
-		}, function(error, result){
-			var json = JSON.parse(result.content)["results"];
-			updateMenus(json);
-			updateHistory(json);
-		});
+			'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
+			'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
+		}
+	}, function(error, result){
+		var json = JSON.parse(result.content)["results"];
+		updateMenus(json);
+		updateHistory(json);
+	});
 	};
 
 	var updateMenus = function (json) {
@@ -82,8 +130,8 @@ if (Meteor.isServer) {
 				Menus.insert({
 					'food': item,
 					'location': location,
-					// 'meal': meal,
-				});
+          			 // 'meal': meal,
+      			});
 			})
 		});
 	};
@@ -119,22 +167,20 @@ if (Meteor.isServer) {
 
 
 	Meteor.methods({
-		sendSMS: function (pin) {
+		sendSMS: function (pin, number) {
 			Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
-				{
-					params:{From:'+16098794415', To:'+16095539543', Body: 'Here is your pin: ' + pin},
-					auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
-					headers: {'content-type':'application/x-www-form-urlencoded'}
-				}, function () {
-					console.log(arguments)
-				}
-			);
+			{
+				params:{From:'+16098794415', To: number, Body: 'Here is your pin: ' + pin},
+				auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
+				headers: {'content-type':'application/x-www-form-urlencoded'}
+			}, function () {
+				console.log(arguments)
+			});
 		},
 
 		addUser: function (number, pin) {
-			Users.insert({
-				number: number,
-				pin: pin
+			Users.insert({number: number, pin: pin}, {validationContext: "insertForm"}, function(error, result) {
+
 			});
 		},
 
@@ -145,5 +191,20 @@ if (Meteor.isServer) {
 			});
 		},
 
+		submitNewUser: function(event) {
+			Meteor.call("sendSMS", 6);
+		},
+
+		sendSMS: function (pin) {
+			Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
+			{
+				params:{From:'+16098794415', To:'+16095539543', Body: 'Here is your pin: ' + pin},
+				auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
+				headers: {'content-type':'application/x-www-form-urlencoded'}
+			}, function () {
+				console.log(arguments)
+			}
+			);
+		}
 	});
 }
