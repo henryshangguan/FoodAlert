@@ -4,6 +4,11 @@ Records = new Mongo.Collection("Records");
 
 
 if (Meteor.isClient) {
+  Router.route('/response/:someValue', function () {
+  console.log(params.someValue);
+  },
+  {where: 'server'});
+
 	Schemas = {};
 	Template.registerHelper("Schemas", Schemas);
 
@@ -149,6 +154,10 @@ if (Meteor.isClient) {
 
 
 if (Meteor.isServer) {
+  Router.route('/response/:someValue', function () {
+  console.log(params.someValue);
+  },
+  {where: 'server'});
 
 	Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
         extended: false
