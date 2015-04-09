@@ -2,12 +2,15 @@ Menus = new Mongo.Collection("Menus");
 Records = new Mongo.Collection("Records");
 
 if (Meteor.isClient) {
-  Schemas = {};
-  Template.registerHelper("Schemas", Schemas);
+	Schemas = {};
+	Template.registerHelper("Schemas", Schemas);
 
-  var Collections = {};
-  Template.registerHelper("Collections", Collections);
+	var Collections = {};
+	Template.registerHelper("Collections", Collections);
 
+	Requests = Collections.Requests = new Mongo.Collection("Requests");
+
+<<<<<<< HEAD
   PendingRequests = Collections.PendingRequests = new Mongo.Collection("PendingRequests");
   ConfirmedRequests = Collections.ConfirmedRequests = new Mongo.Collection("ConfirmedRequests");
 
@@ -64,6 +67,7 @@ Requests.allow({
   }
 });
 
+
 Meteor.publish("Collections.ConfirmedRequests", function () {
   return Requests.find();
 });
@@ -81,7 +85,6 @@ ConfirmedRequests.allow({
 		// 	Meteor.call("sendSMS", pin);
   //   	},
   //   });
-
 	
   Template.body.helpers({
   users: function () {
@@ -91,68 +94,69 @@ ConfirmedRequests.allow({
     return Requests.findOne();
   }
 });
+
 }
 
 if (Meteor.isServer) {
+	/********** UPDATING MENUS DAILY *******/
+	var getMenus = function () {
+		Meteor.http.get('https://api.parse.com/1/classes/Menu', {
+			headers: {'content-type': 'application/json',
+			'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
+			'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
+		}
+	}, function(error, result){
+		var json = JSON.parse(result.content)["results"];
+		updateMenus(json);
+		updateHistory(json);
+	});
+	};
 
-  /********** UPDATING MENUS DAILY *******/
-  var getMenus = function () {
-    Meteor.http.get('https://api.parse.com/1/classes/Menu', {
-      headers: {'content-type': 'application/json',
-        'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
-        'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
-      }
-    }, function(error, result){
-      var json = JSON.parse(result.content)["results"];
-      updateMenus(json);
-      updateHistory(json);
-    });
-  };
+	var updateMenus = function (json) {
+		Menus.remove({});
+		json.forEach(function(hall) {
+			var location = hall['location'];
+			var menu = hall['menu'];
+			var items = menu.split(':');
+			items.forEach(function(item) {
+				Menus.insert({
+					'food': item,
+					'location': location,
+          			 // 'meal': meal,
+      			});
+			})
+		});
+	};
 
-  var updateMenus = function (json) {
-    Menus.remove({});
-    json.forEach(function(hall) {
-      var location = hall['location'];
-      var menu = hall['menu'];
-      var items = menu.split(':');
-      items.forEach(function(item) {
-        Menus.insert({
-          'food': item,
-          'location': location,
-          // 'meal': meal,
-        });
-      })
-    });
-  };
-
-  var updateHistory = function (json) {
-    json.forEach(function(hall) {
-      var loc = hall['location'];
-      var menu = hall['menu'];
-      var items = menu.split(':');
-      items.forEach(function(item) {
-        if (Records.findOne({'food': item})) {
-          var record = {};
-          record[loc] = true;
-          Records.update({'food': item}, {$set: record});
-        } else {
-          var record = {};
-          record['food'] = item;
-          record[loc] = true;
-          Records.insert(record);
-        }
+	var updateHistory = function (json) {
+		json.forEach(function(hall) {
+			var loc = hall['location'];
+			var menu = hall['menu'];
+			var items = menu.split(':');
+			items.forEach(function(item) {
+				if (Records.findOne({'food': item})) {
+					var record = {};
+					record[loc] = true;
+					Records.update({'food': item}, {$set: record});
+				} else {
+					var record = {};
+					record['food'] = item;
+					record[loc] = true;
+					Records.insert(record);
+				}
 
 
-      });
-    });
-  };
+			});
+		});
+	};
 
-  var cron = new Meteor.Cron({
-    events: {
-      "0 6 * * *" : getMenus,
-    }
-  });
-  /*************************************/
+	var cron = new Meteor.Cron({
+		events: {
+			"0 6 * * *" : getMenus,
+		}
+	});
+	/*************************************/
+
 
 	Meteor.methods({
 		// sendSMS: function (pin, number) {
