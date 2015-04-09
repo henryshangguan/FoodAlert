@@ -11,11 +11,7 @@ if (Meteor.isClient) {
 
 	Template.body.events({
 
-		"click .sendPin": function () {
-			var pin = Math.round(Math.random() * 1000);
-			Meteor.call("sendSMS", pin);
-    		// now put pin in a state variable or something so that verify function can use it
-    	},
+
 	});
 
 	Template.addFoodForm.events({
@@ -60,9 +56,68 @@ if (Meteor.isClient) {
 	});
 }
 
-
-
 if (Meteor.isServer) {
+
+	/********** UPDATING MENUS DAILY *******/
+	var getMenus = function () {
+		Meteor.http.get('https://api.parse.com/1/classes/Menu', {
+			headers: {'content-type': 'application/json',
+				'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
+				'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
+			}
+		}, function(error, result){
+			var json = JSON.parse(result.content)["results"];
+			updateMenus(json);
+			updateHistory(json);
+		});
+	};
+
+	var updateMenus = function (json) {
+		Menus.remove({});
+		json.forEach(function(hall) {
+			var location = hall['location'];
+			var menu = hall['menu'];
+			var items = menu.split(':');
+			items.forEach(function(item) {
+				Menus.insert({
+					'food': item,
+					'location': location,
+					// 'meal': meal,
+				});
+			})
+		});
+	};
+
+	var updateHistory = function (json) {
+		json.forEach(function(hall) {
+			var loc = hall['location'];
+			var menu = hall['menu'];
+			var items = menu.split(':');
+			items.forEach(function(item) {
+				if (Records.findOne({'food': item})) {
+					var record = {};
+					record[loc] = true;
+					Records.update({'food': item}, {$set: record});
+				} else {
+					var record = {};
+					record['food'] = item;
+					record[loc] = true;
+					Records.insert(record);
+				}
+
+
+			});
+		});
+	};
+
+	var cron = new Meteor.Cron({
+		events: {
+			"0 6 * * *" : getMenus,
+		}
+	});
+	/*************************************/
+
+
 	Meteor.methods({
 		sendSMS: function (pin) {
 			Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
@@ -88,8 +143,7 @@ if (Meteor.isServer) {
 				number: number,
 				request: request
 			});
-		}
-
+		},
 
 	});
 }
