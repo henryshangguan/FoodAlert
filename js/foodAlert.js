@@ -55,34 +55,41 @@ if (Meteor.isClient) {
 	PendingRequests.attachSchema(Schemas.Request);
 	ConfirmedRequests.attachSchema(Schemas.Request);
 
-	Meteor.publish("Collections.PendingRequests", function () {
-		return PendingRequests.find();
-	});
+	// Meteor.publish("Collections.PendingRequests", function () {
+	// 	return PendingRequests.find();
+	// });
 
-	Requests.allow({
-		update: function () {
-			return true;
-		}
-	});
+	// Requests.allow({
+	// 	update: function () {
+	// 		return true;
+	// 	}
+	// });
 
 
-	Meteor.publish("Collections.ConfirmedRequests", function () {
-		return Requests.find();
-	});
+	// Meteor.publish("Collections.ConfirmedRequests", function () {
+	// 	return Requests.find();
+	// });
 
-	ConfirmedRequests.allow({
-		update: function () {
-			return true;
-		}
-	});
+	// ConfirmedRequests.allow({
+	// 	update: function () {
+	// 		return true;
+	// 	}
+	// });
 
 	// Template.body.events({
 
-		// "click .sendPin": function () {
-		// 	var pin = Math.round(Math.random() * 1000);
-		// 	Meteor.call("sendSMS", pin);
-  //   	},
-  //   });
+	// 	"click .sendPin": function () {
+	// 		var pin = Math.round(Math.random() * 1000);
+	// 		Meteor.call("sendSMS", pin);
+ //    	}
+	// )};
+
+	Template.body.events({
+		"click .test": function () {
+    		console.log("yup");
+    		Meteor.call("testMenus");
+    	}
+	});
 
 Template.body.helpers({
 	users: function () {
@@ -122,7 +129,7 @@ if (Meteor.isServer) {
 					'location': location,
           			 // 'meal': meal,
           			});
-			})
+			});
 		});
 	};
 
@@ -155,8 +162,24 @@ if (Meteor.isServer) {
 	});
 	/*************************************/
 
+	/******* SENDING OUT REQUESTS *********/
+	var sendRequests = function () {
+		ConfirmedRequests.find().forEach(function() {
+
+
+		});
+
+	};
+
+
+
+	/***************************/
+
 
 	Meteor.methods({
+		testMenus: function() {
+			getMenus();
+		},
 		// sendSMS: function (pin, number) {
 		// 	Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
   //     {
