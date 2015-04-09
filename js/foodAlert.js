@@ -8,75 +8,73 @@ if (Meteor.isClient) {
 	var Collections = {};
 	Template.registerHelper("Collections", Collections);
 
-	Requests = Collections.Requests = new Mongo.Collection("Requests");
 
-<<<<<<< HEAD
-  PendingRequests = Collections.PendingRequests = new Mongo.Collection("PendingRequests");
-  ConfirmedRequests = Collections.ConfirmedRequests = new Mongo.Collection("ConfirmedRequests");
+	PendingRequests = Collections.PendingRequests = new Mongo.Collection("PendingRequests");
+	ConfirmedRequests = Collections.ConfirmedRequests = new Mongo.Collection("ConfirmedRequests");
 
-  Meteor.subscribe("ConfirmedRequests");
+	Meteor.subscribe("ConfirmedRequests");
 	Meteor.subscribe("PendingRequests");
 	Meteor.subscribe("Menus");
 	Meteor.subscribe("Records");
 
-  Schemas.Request = new SimpleSchema({
-  requests: {
-    type: Array,
-    optional: true
-  },
-  'requests.$': {
-    type: Object
-  },
-  'requests.$.food': {
-    type: String,
-    label: "Food",
-    max: 40 
-  },
-  'requests.$.location': {
-    type: String,
-    label: "Dining Hall",
-    allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
-    autoform: {
-      options: [
-        {label: "Center for Jewish Life", value: "Center for Jewish Life"},
-        {label: "Forbes", value: "Forbes"},
-        {label: "Rocky/Mathey", value: "Rocky/Mathey"},
-        {label: "Whitman", value: "Whitman"},
-        {label: "Wu/Wilcox", value: "Wu/Wilcox"}
-      ]
-    }
-  },
-    'requests.$.number': {
-      type: String,
-      label: "Phone Number",
-      min: 10,
-      max: 10
-    }
-  });
+	Schemas.Request = new SimpleSchema({
+		requests: {
+			type: Array,
+			optional: true
+		},
+		'requests.$': {
+			type: Object
+		},
+		'requests.$.food': {
+			type: String,
+			label: "Food",
+			max: 40 
+		},
+		'requests.$.location': {
+			type: String,
+			label: "Dining Hall",
+			allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
+			autoform: {
+				options: [
+				{label: "Center for Jewish Life", value: "Center for Jewish Life"},
+				{label: "Forbes", value: "Forbes"},
+				{label: "Rocky/Mathey", value: "Rocky/Mathey"},
+				{label: "Whitman", value: "Whitman"},
+				{label: "Wu/Wilcox", value: "Wu/Wilcox"}
+				]
+			}
+		},
+		'requests.$.number': {
+			type: String,
+			label: "Phone Number",
+			min: 10,
+			max: 10
+		}
+	});
 
-  PendingRequests.attachSchema(Schemas.Request);
-  ConfirmedRequests.attachSchema(Schemas.Request);
+	PendingRequests.attachSchema(Schemas.Request);
+	ConfirmedRequests.attachSchema(Schemas.Request);
 
-Meteor.publish("Collections.PendingRequests", function () {
-  return PendingRequests.find();
-});
+	Meteor.publish("Collections.PendingRequests", function () {
+		return PendingRequests.find();
+	});
 
-Requests.allow({
-  update: function () {
-    return true;
-  }
-});
+	Requests.allow({
+		update: function () {
+			return true;
+		}
+	});
 
 
-Meteor.publish("Collections.ConfirmedRequests", function () {
-  return Requests.find();
-});
+	Meteor.publish("Collections.ConfirmedRequests", function () {
+		return Requests.find();
+	});
 
-ConfirmedRequests.allow({
-  update: function () {
-    return true;
-  }
-});
+	ConfirmedRequests.allow({
+		update: function () {
+			return true;
+		}
+	});
 
 	// Template.body.events({
 
@@ -85,14 +83,14 @@ ConfirmedRequests.allow({
 		// 	Meteor.call("sendSMS", pin);
   //   	},
   //   });
-	
-  Template.body.helpers({
-  users: function () {
-   return Requests.find({}, {sort: {createdAt: -1}});
-  },
-  exampleDoc: function () {
-    return Requests.findOne();
-  }
+
+Template.body.helpers({
+	users: function () {
+		return Requests.find({}, {sort: {createdAt: -1}});
+	},
+	exampleDoc: function () {
+		return Requests.findOne();
+	}
 });
 
 }
@@ -123,7 +121,7 @@ if (Meteor.isServer) {
 					'food': item,
 					'location': location,
           			 // 'meal': meal,
-      			});
+          			});
 			})
 		});
 	};
@@ -181,5 +179,5 @@ if (Meteor.isServer) {
   //       }
   //     );
   //   }
-  });
+});
 }
