@@ -8,15 +8,27 @@ src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
 <body>
   <h1>Princeton FoodAlert!!</h1>
 
-  {{> quickForm id="updatePushForm" type="update-pushArray" collection=Collections.PendingRequests doc=exampleDoc scope="requests"}}
-
+  {{> form}}
+  <ul>
+  {{#each PendingRequests}}
+  	{{> test}}
+  {{/each}}
+  </ul>
 
 </body>
 
 <template name="test">
-	<span class="text">{{number}} - {{pin}}</span>
+	<span class="text">{{number}} {{food}} {{location}}</span>
 	<br>
 </template>
 
+<template name="form">
+{{> quickForm id="form" schema=Schemas.PendingRequest}}
 
-
+	<!-- {{#autoForm id="form" schema=Schemas.PendingRequest}}
+  {{> afQuickFields}}
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+{{/autoForm}} -->
+</template>
