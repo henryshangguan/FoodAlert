@@ -2,20 +2,20 @@ Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
     extended: false
 }));
 
-	Router.route('/response/', function () {
-		var text = this.request.body.Body;
-		var phone = this.request.body.From;
+Router.route('/response/', function () {
+	var text = this.request.body.Body;
+	var phone = this.request.body.From;
 
-		if (text.toUpperCase() === "YES") {
-			sendSMS(phone, "Your reqeust has been saved.");
-			transferRequest(phone);
-			}
+	if (text.toUpperCase() === "YES") {
+		sendSMS(phone, "Your reqeust has been saved.");
+		transferRequest(phone);
+		}
 
-		else if (text.toUpperCase() === "NO") {
-			sendSMS(phone, "Your reqeust has been deleted.");
-			}
-		},
-	{where: 'server'});
+	else if (text.toUpperCase() === "NO") {
+		sendSMS(phone, "Your reqeust has been deleted.");
+		}
+	},
+{where: 'server'});
 
 
 var sendSMS = function (number, text) {
@@ -36,12 +36,12 @@ var getMenus = function () {
 		headers: {'content-type': 'application/json',
 		'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
 		'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
-	}
-}, function(error, result){
-	var json = JSON.parse(result.content)["results"];
-	updateMenus(json);
-	updateHistory(json);
-});
+		}
+	}, function(error, result){
+		var json = JSON.parse(result.content)["results"];
+		updateMenus(json);
+		updateHistory(json);
+	});
 };
 
 var updateMenus = function (json) {
