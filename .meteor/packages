@@ -17,3 +17,4 @@ autopublish
 mrt:cron
 iron:router
 mrt:twilio
+aldeed:simple-schema
