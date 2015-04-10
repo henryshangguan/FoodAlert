@@ -1,7 +1,7 @@
 
 
 Schemas = {};
-//Template.registerHelper("Schemas", Schemas);
+Template.registerHelper("Schemas", Schemas);
 
 Schemas.PendingRequest = new SimpleSchema({
 	number : {
@@ -56,16 +56,7 @@ Schemas.ConfirmedRequest = new SimpleSchema({
 	'requests.$.location': {
 		type: String,
 		label: "Dining Hall",
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
-		autoform: {
-			options: [
-			{label: "Center for Jewish Life", value: "Center for Jewish Life"},
-			{label: "Forbes", value: "Forbes"},
-			{label: "Rocky/Mathey", value: "Rocky/Mathey"},
-			{label: "Whitman", value: "Whitman"},
-			{label: "Wu/Wilcox", value: "Wu/Wilcox"}
-			]
-		}
+		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox']
 	}
 });
 
@@ -81,11 +72,14 @@ ConfirmedRequests.attachSchema(Schemas.ConfirmedRequest);
 // 	return PendingRequests.find();
 // });
 
-// Requests.allow({
-// 	update: function () {
-// 		return true;
-// 	}
-// });
+PendingRequests.allow({
+	update: function () {
+		return true;
+	},
+	insert: function () {
+		return true;
+	}
+});
 
 
 // Meteor.publish("Collections.ConfirmedRequests", function () {
@@ -113,24 +107,26 @@ Template.body.events({
 	}
 });
 
-Template.body.helpers({
-	users: function () {
-		return Requests.find({}, {sort: {createdAt: -1}});
-	},
-	exampleDoc: function () {
-		return Requests.findOne();
-	}
-});
+// Template.body.helpers({
+// 	users: function () {
+// 		return Requests.find({}, {sort: {createdAt: -1}});
+// 	},
+// 	exampleDoc: function () {
+// 		return Requests.findOne();
+// 	}
+// });
 
 Template.form.events({
 	'submit ' : function () {
-		console.log("hello");
-		var number = AutoForm.getFieldValue("number", "form");
-		var food = AutoForm.getFieldValue("request.food", "form");
-		var location = AutoForm.getFieldValue("request.location", "form");
+		var number = AutoForm.getFieldValue("number", "requestForm");
+		var food = AutoForm.getFieldValue("request.food", "requestForm");
+		var location = AutoForm.getFieldValue("request.location", "requestForm");
 		console.log(number);
 		console.log(food);
 		console.log(location);
-		Meteor.call("sendSMS", number, food, location);
+		var message = "Food: " + food + " Location: " + location;
+		Meteor.call("sendSMS", number, message);
+		Meteor.call("addPendingRequest", number, food, location);
+		console.log("inserted");
 	}
 });

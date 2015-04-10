@@ -9,13 +9,6 @@ src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
   <h1>Princeton FoodAlert!!</h1>
 
   {{> form}}
-  <ul>
-  {{#each PendingRequests}}
-  	{{> test}}
-  {{/each}}
-  </ul>
-
-	
 </body>
 
 <template name="test">
@@ -26,7 +19,7 @@ src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
 </template>
 
 <template name="form">
-{{> quickForm id="form" schema=Schemas.PendingRequest}}
+{{> quickForm id="requestForm" schema=Schemas.PendingRequest}}
 
 	<!-- {{#autoForm id="form" schema=Schemas.PendingRequest}}
   {{> afQuickFields}}
