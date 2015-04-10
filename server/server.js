@@ -22,14 +22,6 @@ var sendSMS = function (number, text) {
 };
 
 
-
-// Router.route('/response/:_id', {
-// 	data: function() {
-// 		console.log('hi');
-// 	}
-// },
-// {where: 'server'});
-
 /********** UPDATING MENUS DAILY *******/
 var getMenus = function () {
 	Meteor.http.get('https://api.parse.com/1/classes/Menu', {
