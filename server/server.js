@@ -76,7 +76,7 @@ var updateHistory = function (json) {
 
 var cronUpdateMenus = new Meteor.Cron({
 	events: {
-		"0 6 * * *" : getMenus,
+		"0 10 * * *" : getMenus,
 	}
 });
 /*************************************/
