@@ -5,8 +5,16 @@ Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
 	Router.route('/response/', function () {
 		var text = this.request.body.Body;
 		var phone = this.request.body.From;
-		sendSMS(phone, text);
-	},
+
+		if (text.toUpperCase() === "YES") {
+			sendSMS(phone, "Your reqeust has been saved.");
+			transferRequest(phone);
+			}
+
+		else if (text.toUpperCase() === "NO") {
+			sendSMS(phone, "Your reqeust has been deleted.");
+			}
+		},
 	{where: 'server'});
 
 
@@ -133,14 +141,13 @@ var cronSendMessages = new Meteor.Cron({
 });
 /***************************/
 
-
-
-// no need for methods to be in here? All client side submitting is done with the form?
 Meteor.methods({
-	sendSMS: function (number, food, location) {
+
+/******* SENDING OUT TEXTS *********/
+	sendSMS: function (number, message) {
 		Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
 		{
-			params:{From:'+16098794415', To: number, Body: 'Food: ' + food + 'Location: ' + location},
+			params:{From:'+16098794415', To: number, Body: message},
 			auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
 			headers: {'content-type':'application/x-www-form-urlencoded'}
 		}, function () {
@@ -148,5 +155,31 @@ Meteor.methods({
 		});
 	},
 
+/******* ADDING INITIAL REQUEST *********/
+	addPendingRequest: function (number, food, location) {
+	PendingRequests.insert({
+		number: number,
+		food: food,
+		location: location
+	});
+	},
+
+	addConfirmedRequest: function (number, food, location) {
+		ConfirmedRequests.insert({
+			number: number,
+			food: food,
+			location: location
+		});
+	},
+
+/******* ADDING INITIAL REQUEST *********/
+	transferRequest: function (phone) {
+		var requestsToMove = PendingRequests.findOne({number: phone});
+		var number = requestsToMove.fetch().get("number");
+		var food = requestsToMove.fetch().get("food");
+		var location = requestsToMove.fetch().get("location");
+
+		Meteor.call("addConfirmedRequest", "test", "test", "test");
+	}
 
 });
