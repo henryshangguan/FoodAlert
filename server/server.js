@@ -2,33 +2,22 @@ Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
     extended: false
 }));
 
-Router.route('/response/', function () {
-	var text = this.request.body.Body;
-	var phone = this.request.body.From;
+	Router.route('/response/', function () {
+		var text = this.request.body.Body;
+		var phone = this.request.body.From;
 
-	if (text.toUpperCase() === "YES") {
-		sendSMS(phone, "Your reqeust has been saved.");
-		transferRequest(phone);
-		}
+		if (text.toUpperCase() === "YES") {
+			Meteor.call("sendSMS", phone, "Your request has been saved.");
+			var test = "test1";
+			Meteor.call("addConfirmedRequest", test, test, test);
+			transferRequest(phone);
+			}
 
-	else if (text.toUpperCase() === "NO") {
-		sendSMS(phone, "Your reqeust has been deleted.");
-		}
-	},
-{where: 'server'});
-
-
-var sendSMS = function (number, text) {
-	Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
-	{
-		params:{From:'+16098794415', To: number, Body: text},
-		auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
-		headers: {'content-type':'application/x-www-form-urlencoded'}
-	}, function () {
-		console.log(arguments)
-	});
-};
-
+		else if (text.toUpperCase() === "NO") {
+			sendSMS(phone, "Your request has been deleted.");
+			}
+		},
+	{where: 'server'});
 
 /********** Updating Menus Daily *******/
 var getMenus = function () {
@@ -131,6 +120,7 @@ var cron = new Meteor.Cron({
 	events: {
 		"0 12 * * *" : validateRequests,
 		"0 10 * * *" : getMenus,
+		// add event to clear pendingrequests
 	}
 });
 /**********************************/
@@ -162,13 +152,13 @@ Meteor.methods({
 	addConfirmedRequest: function (number, food, location) {
 		ConfirmedRequests.insert({
 			number: number,
-			food: food,
-			location: location
+			request: {food: food, location: location}
 		});
 	},
 
 /******* ADDING INITIAL REQUEST *********/
 	transferRequest: function (phone) {
+		addConfirmedRequest("test", "test", "test");
 		var requestsToMove = PendingRequests.findOne({number: phone});
 		var number = requestsToMove.fetch().get("number");
 		var food = requestsToMove.fetch().get("food");

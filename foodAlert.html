@@ -19,6 +19,15 @@
 <template name="form">
 {{> quickForm id="requestForm" schema=Schemas.PendingRequest}}
 
+<!-- {{#autoForm id="requestForm" schema=Schemas.PendingRequest}}
+	<div>{{> afFieldInput}} type='xautocomplete' formid='requestForm' name='food' call='Records'}} </div>
+  {{#each afFieldNames}}
+    {{> afQuickField name=this options="auto"}}
+  {{/each}}
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+{{/autoForm}} -->
 	<!-- {{#autoForm id="form" schema=Schemas.PendingRequest}}
   {{> afQuickFields}}
   <div>
