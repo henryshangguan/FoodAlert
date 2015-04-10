@@ -25,12 +25,12 @@ var getMenus = function () {
 		headers: {'content-type': 'application/json',
 		'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
 		'X-Parse-REST-API-Key': '4k9UZsWoBklkdRK8JXntG1XP3TjFvU4CwTbIDIhS',
-	}
-}, function(error, result){
-	var json = JSON.parse(result.content)["results"];
-	updateMenus(json);
-	updateHistory(json);
-});
+		}
+	}, function(error, result){
+		var json = JSON.parse(result.content)["results"];
+		updateMenus(json);
+		updateHistory(json);
+	});
 };
 
 var updateMenus = function (json) {
