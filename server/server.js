@@ -30,7 +30,7 @@ var sendSMS = function (number, text) {
 };
 
 
-/********** UPDATING MENUS DAILY *******/
+/********** Updating Menus Daily *******/
 var getMenus = function () {
 	Meteor.http.get('https://api.parse.com/1/classes/Menu', {
 		headers: {'content-type': 'application/json',
@@ -49,12 +49,13 @@ var updateMenus = function (json) {
 	json.forEach(function(hall) {
 		var location = hall['location'];
 		var menu = hall['menu'];
+		var time = hall['time']
 		var items = menu.split(':');
 		items.forEach(function(item) {
 			Menus.insert({
-				'food': item,
-				'location': location,
-      			 // 'meal': meal,
+					'food': item,
+					'location': location,
+	      			'time': time,
       			});
 		});
 	});
@@ -76,26 +77,23 @@ var updateHistory = function (json) {
 				record[loc] = true;
 				Records.insert(record);
 			}
-
-
 		});
 	});
 };
-
-var cronUpdateMenus = new Meteor.Cron({
-	events: {
-		"0 10 * * *" : getMenus,
-	}
-});
 /*************************************/
 
 
 
-/******* SENDING OUT REQUESTS *********/
+/******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
-	// concatenate string using results array, then send to phone
+	var message = '';
+	results.forEach(function(result) {
+		message.concat('Food: ', result['food'],
+						', Location: ', result['location'],
+						', Time: ', result['time'], '\n');
+	});
 
-
+	Meteor.call('sendSMS', phone, message);
 };
 
 var validateRequests = function () {
@@ -107,42 +105,39 @@ var validateRequests = function () {
 			var food = entry['food'];
 			var loc = entry['location'];
 
-			if (loc == 'All') {
-				if (Menus.findOne({'food': food})) {
-					// success!
+			var items = Menus.find({'food': food}); 
+			items.forEach(function(item) {
+				if (loc == 'All' || item['location'] == loc) {
+					// success! either all, or location matches
 					results.push({
 						'food': food,
 						'location': loc,
+						'time': item['time'],
 					});
 				}
-			} else {
-				var item = Menus.findOne({'food': food});
-				if (item) {
-					if (item[loc]) {
-						// success!
-						results.push({
-							'food': food,
-							'location': loc,
-						});
-					}
-				}
 
-			}
+			});
 		});
 
 		sendRequests(phone, results);
 	});
 };
-
-var cronSendMessages = new Meteor.Cron({
-	events: {
-		"0 12 * * *" : validateRequests,
-	}
-});
 /***************************/
 
-Meteor.methods({
 
+
+/************** Scheduled Cron Jobs *************/
+var cron = new Meteor.Cron({
+	events: {
+		"0 12 * * *" : validateRequests,
+		"0 10 * * *" : getMenus,
+	}
+});
+/**********************************/
+
+
+
+Meteor.methods({
 /******* SENDING OUT TEXTS *********/
 	sendSMS: function (number, message) {
 		Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
@@ -157,11 +152,11 @@ Meteor.methods({
 
 /******* ADDING INITIAL REQUEST *********/
 	addPendingRequest: function (number, food, location) {
-	PendingRequests.insert({
-		number: number,
-		food: food,
-		location: location
-	});
+		PendingRequests.insert({
+			number: number,
+			food: food,
+			location: location
+		});
 	},
 
 	addConfirmedRequest: function (number, food, location) {
@@ -180,6 +175,6 @@ Meteor.methods({
 		var location = requestsToMove.fetch().get("location");
 
 		Meteor.call("addConfirmedRequest", "test", "test", "test");
-	}
+	},
 
 });
