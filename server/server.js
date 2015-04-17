@@ -162,13 +162,12 @@ Meteor.methods({
 
 /******* ADDING INITIAL REQUEST *********/
 	transferRequest: function (phone) {
-		addConfirmedRequest("test", "test", "test");
 		var requestsToMove = PendingRequests.findOne({number: phone});
 		var number = requestsToMove.fetch().get("number");
 		var food = requestsToMove.fetch().get("food");
 		var location = requestsToMove.fetch().get("location");
 
-		Meteor.call("addConfirmedRequest", "test", "test", "test");
+		Meteor.call("addConfirmedRequest", number, food, location;
 	},
 
 });
