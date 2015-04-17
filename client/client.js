@@ -1,9 +1,9 @@
+Meteor.subscribe("ConfirmedRequests");
+Meteor.subscribe("PendingRequests");
+Meteor.subscribe("Menus");
+Meteor.subscribe("Records");
 
-
-Schemas = {};
-Template.registerHelper("Schemas", Schemas);
-
-Schemas.PendingRequest = new SimpleSchema({
+PendingRequest = new SimpleSchema({
 	number : {
 		type: String,
 		label: "Phone Number",
@@ -34,7 +34,37 @@ Schemas.PendingRequest = new SimpleSchema({
 	} 
 });
 
-Schemas.ConfirmedRequest = new SimpleSchema({
+PartialRequest = new SimpleSchema({
+	location: {
+		type: String,
+		label: "Dining Hall",
+		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
+		autoform: {
+			options: [
+			{label: "Center for Jewish Life", value: "Center for Jewish Life"},
+			{label: "Forbes", value: "Forbes"},
+			{label: "Rocky/Mathey", value: "Rocky/Mathey"},
+			{label: "Whitman", value: "Whitman"},
+			{label: "Wu/Wilcox", value: "Wu/Wilcox"}
+			]
+		}
+	},
+	number : {
+		type: String,
+		label: "Phone Number",
+		min: 10,
+		max: 10
+	}
+});
+
+Record = new SimpleSchema({
+	food: {
+		type: String,
+		label: "Food"
+	}
+});
+
+ConfirmedRequest = new SimpleSchema({
 	number: {
 		type: String,
 		label: "Phone Number",
@@ -60,17 +90,10 @@ Schemas.ConfirmedRequest = new SimpleSchema({
 	}
 });
 
-Meteor.subscribe("ConfirmedRequests");
-Meteor.subscribe("PendingRequests");
-Meteor.subscribe("Menus");
-Meteor.subscribe("Records");
-
-PendingRequests.attachSchema(Schemas.PendingRequest);
-ConfirmedRequests.attachSchema(Schemas.ConfirmedRequest);
-
-// Meteor.publish("Collections.PendingRequests", function () {
-// 	return PendingRequests.find();
-// });
+PendingRequests.attachSchema(PendingRequest);
+ConfirmedRequests.attachSchema(ConfirmedRequest);
+Records.attachSchema(Record);
+PartialRequests.attachSchema(PartialRequest);
 
 PendingRequests.allow({
 	update: function () {
@@ -81,16 +104,23 @@ PendingRequests.allow({
 	}
 });
 
+Records.allow({
+	update: function () {
+		return true;
+	},
+	insert: function () {
+		return true;
+	}
+});
 
-// Meteor.publish("Collections.ConfirmedRequests", function () {
-// 	return Requests.find();
-// });
-
-// ConfirmedRequests.allow({
-// 	update: function () {
-// 		return true;
-// 	}
-// });
+PartialRequests.allow({
+	update: function () {
+		return true;
+	},
+	insert: function () {
+		return true;
+	}
+});
 
 // Template.body.events({
 
@@ -116,17 +146,41 @@ Template.body.events({
 // 	}
 // });
 
-Template.form.events({
+Template.form2.events({
 	'submit ' : function () {
+		var location = AutoForm.getFieldValue("location", "requestForm");
 		var number = AutoForm.getFieldValue("number", "requestForm");
-		var food = AutoForm.getFieldValue("request.food", "requestForm");
-		var location = AutoForm.getFieldValue("request.location", "requestForm");
+		var food = $('#food').val();
+        
+		console.log(location);
 		console.log(number);
 		console.log(food);
-		console.log(location);
+
 		var message = "Food: " + food + " Location: " + location;
 		Meteor.call("sendSMS", number, message);
 		Meteor.call("addPendingRequest", number, food, location);
 		console.log("inserted");
 	}
 });
+
+Template.form.helpers({
+  settings: function() {
+    return {
+      position: "bottom",
+      limit: 5,
+      rules: 
+      [
+      {
+          collection: Records,
+          field: 'food',
+          matchAll: true,
+          template: Template.foodFill
+        }
+        ] 
+    };
+  },
+  records: function() {
+  	return Records.find().fetch();
+  }
+});
+

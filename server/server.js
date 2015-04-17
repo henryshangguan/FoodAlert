@@ -130,6 +130,14 @@ var cronSendMessages = new Meteor.Cron({
 });
 /***************************/
 
+// Meteor.publish("Collections.PendingRequests", function () {
+// 	return PendingRequests.find();
+// });
+
+// Meteor.publish("Records", function () {
+// 	return Records.find();
+// });
+
 Meteor.methods({
 
 /******* SENDING OUT TEXTS *********/
@@ -157,6 +165,12 @@ Meteor.methods({
 		ConfirmedRequests.insert({
 			number: number,
 			request: {food: food, location: location}
+		});
+	},
+//////////Needs updating
+	addRecord: function (food) {
+		Records.insert({
+			food: food
 		});
 	},
 

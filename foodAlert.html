@@ -1,14 +1,15 @@
 <head>
   <title>foodAlert</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script type="text/javascript"
-src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
 </head>
 
 <body>
   <h1>Princeton FoodAlert!!</h1>
 
   {{> form}}
+  {{> form2}}
+  
+  
 </body>
 
 <template name="test">
@@ -19,10 +20,27 @@ src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
 </template>
 
 <template name="form">
-{{> quickForm id="requestForm" schema=Schemas.PendingRequest}}
+{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="Chat..."}}
+
+  <ul>
+    {{#each records}}
+        {{food}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="form2">
+{{> quickForm id="requestForm" collection="PartialRequests"}}
+</template>
+
+
+<template name="foodFill">
+    <span style="color: {{color}}; background-color: {{bg}};"></span> {{food}}
+</template>
+
 
 <!-- {{#autoForm id="requestForm" schema=Schemas.PendingRequest}}
-	<div>{{> afFieldInput}} type='xautocomplete' formid='requestForm' name='food' call='Records'}} </div>
+	<div>{{> afFieldInput name='food'}} </div>
   {{#each afFieldNames}}
     {{> afQuickField name=this options="auto"}}
   {{/each}}
@@ -36,4 +54,3 @@ src="//static.twilio.com/libs/twiliojs/1.2/twilio.min.js"></script>
     <button type="submit">Submit</button>
   </div>
 {{/autoForm}} -->
-</template>
