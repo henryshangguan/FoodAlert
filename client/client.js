@@ -132,7 +132,6 @@ PartialRequests.allow({
 
 Template.body.events({
 	"click .test": function () {
-		console.log("yup");
 		Meteor.call("testMenus");
 	}
 });
