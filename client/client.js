@@ -21,7 +21,7 @@ PendingRequest = new SimpleSchema({
 	'request.location': {
 		type: String,
 		label: "Dining Hall",
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
+		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [
 			{label: "Center for Jewish Life", value: "Center for Jewish Life"},
@@ -39,14 +39,15 @@ PartialRequest = new SimpleSchema({
 	location: {
 		type: String,
 		label: "Dining Hall",
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox'],
+		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [
 			{label: "Center for Jewish Life", value: "Center for Jewish Life"},
 			{label: "Forbes", value: "Forbes"},
 			{label: "Rocky/Mathey", value: "Rocky/Mathey"},
 			{label: "Whitman", value: "Whitman"},
-			{label: "Wu/Wilcox", value: "Wu/Wilcox"}
+			{label: "Wu/Wilcox", value: "Wu/Wilcox"},
+			{label: "All", value: "All"}
 			]
 		}
 	},
