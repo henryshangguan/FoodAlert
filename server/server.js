@@ -7,18 +7,14 @@ Router.route('/response/', function () {
 	var phone = this.request.body.From;
 
 	if (text.toUpperCase() === "YES") {
-		Meteor.call("sendSMS", phone, "Your request has been saved.");
-		console.log("THIS IS THE PHONE");
-		console.log(phone);
-		console.log(PendingRequests.find().count());
-		transferRequest(phone);
-		}
-
-	else if (text.toUpperCase() === "NO") {
-		sendSMS(phone, "Your request has been deleted.");
-		var requestToMove = PendingRequests.findOne({number: phone});
-		var id = requestToMove['_id'];
-		clearRequest(id);
+			Meteor.call("sendSMS", phone, "Your request has been saved.");
+			transferRequest(phone);
+	} else if (text.toUpperCase() === "NO") {
+			Meteor.call('sendSMS', phone, "Your request has been deleted.");
+			var requestToMove = PendingRequests.findOne({number: phone});
+			var id = requestToMove['_id'];
+			console.log("deleting")
+			clearRequest(id);
 		}
 	},
 {where: 'server'});
@@ -136,11 +132,6 @@ var clearPending = function () {
 /************** Add a ConfirmedRequest *************/
 // not tested
 var	addConfirmedRequest = function (number, food, location) {
-	console.log("ADD CONFIRMED REQUEST");
-	console.log(number);
-	console.log(food);
-	console.log(location);
-
 	var confirms = ConfirmedRequests.findOne({'number': number}); 
 	if (!confirms) {
 		// add a new number
@@ -148,35 +139,30 @@ var	addConfirmedRequest = function (number, food, location) {
 			number: number,
 			requests: [{'food': food, 'location': location}]
 		});
-		console.log("success new");
 	} else {
 		// update existing number's requests
 		ConfirmedRequests.update({'number': number}, 
 			{$addToSet: {'requests': {
 				'food': food,
 				'location': location,
-			}}});
-		console.log("success update");
+		}}});
 	}
 }
 /**********************************/
 
 /******* ADDING INITIAL REQUEST *********/
 var transferRequest = function (phone) {
-		console.log("called transferRequest");
-		console.log(PendingRequests.find().count());
-		console.log(PendingRequests.findOne());
-		var requestToMove = PendingRequests.findOne({number: phone});
-		if (requestToMove) {
-			var number = requestToMove['number'];
-			var food = requestToMove['food'];
-			var location = requestToMove['location'];
-			var id = requestToMove['_id'];
+	var requestToMove = PendingRequests.findOne({number: phone});
+	if (requestToMove) {
+		var number = requestToMove['number'];
+		var food = requestToMove['food'];
+		var location = requestToMove['location'];
+		var id = requestToMove['_id'];
 
-			addConfirmedRequest(number, food, location);
-			clearRequest(id);
-		}
+		addConfirmedRequest(number, food, location);
+		clearRequest(id);
 	}
+}
 /**********************************/
 
 /******* REMOVE TRANSFERRED REQUEST *********/
@@ -193,7 +179,6 @@ var cron = new Meteor.Cron({
 		"0 12 * * *" : validateRequests,
 		"0 10 * * *" : getMenus,
 		"0 8 * * *" : clearPending,
-		// add event to clear pendingrequests
 	}
 });
 /**********************************/
@@ -219,8 +204,8 @@ Meteor.methods({
 			food: food,
 			location: location
 		});
-		console.log("called meteor method for adding pending");
-		console.log(PendingRequests.find().count());
+		Meteor.call("sendSMS", number, 
+			"text yes to confirm:\nFood: " + food + "\nLocation: " + location);
 	},
 
 //////////Needs updating
@@ -233,12 +218,16 @@ Meteor.methods({
 //************* TEMPORARY ******************//
 	testValidate: function() {
 		validateRequests();
-		//getMenus();
 	},
-
+	getMenus: function() {
+		getMenus();
+	},
 	clearPendingRequests: function() {
 		PendingRequests.remove({});
-	}
+	},
+	clearConfirmedRequests: function() {
+		ConfirmedRequests.remove({});
+	},
 
 //************* TEMPORARY ******************//
 });

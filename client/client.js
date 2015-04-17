@@ -133,11 +133,17 @@ PartialRequests.allow({
 // )};
 
 Template.body.events({
-	"click .test": function () {
+	"click .validate": function () {
 		Meteor.call("testValidate");
 	},
 	"click .clearPending": function () {
 		Meteor.call("clearPendingRequests");
+	},
+	"click .clearConfirmed": function () {
+		Meteor.call("clearConfirmedRequests");
+	},
+	"click .getMenus": function () {
+		Meteor.call("getMenus");
 	}
 });
 
@@ -157,14 +163,11 @@ Template.form2.events({
 		var numberAdded = "+1".concat(number);
 		var food = $('#food').val();
         
-		console.log(location);
-		console.log(numberAdded);
-		console.log(food);
+		// console.log(location);
+		// console.log(numberAdded);
+		// console.log(food);
 
-		var message = "Food: " + food + " Location: " + location;
-		Meteor.call("sendSMS", number, message);
 		Meteor.call("addPendingRequest", numberAdded, food, location);
-		console.log("inserted");
 	}
 });
 
