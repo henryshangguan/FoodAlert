@@ -28,7 +28,8 @@ Schemas.PendingRequest = new SimpleSchema({
 			{label: "Forbes", value: "Forbes"},
 			{label: "Rocky/Mathey", value: "Rocky/Mathey"},
 			{label: "Whitman", value: "Whitman"},
-			{label: "Wu/Wilcox", value: "Wu/Wilcox"}
+			{label: "Wu/Wilcox", value: "Wu/Wilcox"},
+			{label: "All", value: "All"},
 			]
 		}
 	} 
@@ -56,7 +57,7 @@ Schemas.ConfirmedRequest = new SimpleSchema({
 	'requests.$.location': {
 		type: String,
 		label: "Dining Hall",
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox']
+		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', 'All']
 	}
 });
 
@@ -102,7 +103,7 @@ PendingRequests.allow({
 
 Template.body.events({
 	"click .test": function () {
-		Meteor.call("testMenus");
+		Meteor.call("testValidate");
 	}
 });
 
