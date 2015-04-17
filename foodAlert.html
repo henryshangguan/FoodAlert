@@ -7,6 +7,9 @@
   <h1>Princeton FoodAlert!!</h1>
   <button class="test">hi</button>
   {{> form}}
+  {{> form2}}
+  
+  
 </body>
 
 <template name="test">
@@ -17,10 +20,27 @@
 </template>
 
 <template name="form">
-{{> quickForm id="requestForm" schema=Schemas.PendingRequest}}
+{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="Chat..."}}
+
+  <ul>
+    {{#each records}}
+        {{food}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="form2">
+{{> quickForm id="requestForm" collection="PartialRequests"}}
+</template>
+
+
+<template name="foodFill">
+    <span style="color: {{color}}; background-color: {{bg}};"></span> {{food}}
+</template>
+
 
 <!-- {{#autoForm id="requestForm" schema=Schemas.PendingRequest}}
-	<div>{{> afFieldInput}} type='xautocomplete' formid='requestForm' name='food' call='Records'}} </div>
+	<div>{{> afFieldInput name='food'}} </div>
   {{#each afFieldNames}}
     {{> afQuickField name=this options="auto"}}
   {{/each}}
@@ -34,4 +54,3 @@
     <button type="submit">Submit</button>
   </div>
 {{/autoForm}} -->
-</template>

@@ -163,8 +163,6 @@ var cron = new Meteor.Cron({
 });
 /**********************************/
 
-
-
 Meteor.methods({
 /******* SENDING OUT TEXTS *********/
 	sendSMS: function (number, message) {
@@ -186,6 +184,14 @@ Meteor.methods({
 			location: location
 		});
 	},
+
+//////////Needs updating
+	addRecord: function (food) {
+		Records.insert({
+			food: food
+		});
+	},
+
 
 /******* ADDING INITIAL REQUEST *********/
 	transferRequest: function (phone) {
