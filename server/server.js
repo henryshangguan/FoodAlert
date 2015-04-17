@@ -200,7 +200,7 @@ Meteor.methods({
 		var food = requestsToMove.fetch().get("food");
 		var location = requestsToMove.fetch().get("location");
 
-		Meteor.call("addConfirmedRequest", number, food, location;
+		addConfirmedRequest(number, food, location);
 
 	},
 
