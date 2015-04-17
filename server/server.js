@@ -2,22 +2,22 @@ Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
     extended: false
 }));
 
-	Router.route('/response/', function () {
-		var text = this.request.body.Body;
-		var phone = this.request.body.From;
+Router.route('/response/', function () {
+	var text = this.request.body.Body;
+	var phone = this.request.body.From;
 
-		if (text.toUpperCase() === "YES") {
-			Meteor.call("sendSMS", phone, "Your request has been saved.");
-			var test = "test1";
-			Meteor.call("addConfirmedRequest", test, test, test);
-			transferRequest(phone);
-			}
+	if (text.toUpperCase() === "YES") {
+		Meteor.call("sendSMS", phone, "Your request has been saved.");
+		var test = "test1";
+		Meteor.call("addConfirmedRequest", test, test, test);
+		transferRequest(phone);
+		}
 
-		else if (text.toUpperCase() === "NO") {
-			sendSMS(phone, "Your request has been deleted.");
-			}
-		},
-	{where: 'server'});
+	else if (text.toUpperCase() === "NO") {
+		sendSMS(phone, "Your request has been deleted.");
+		}
+	},
+{where: 'server'});
 
 /********** Updating Menus Daily *******/
 var getMenus = function () {
@@ -75,51 +75,89 @@ var updateHistory = function (json) {
 
 /******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
-	var message = '';
-	results.forEach(function(result) {
-		message.concat('Food: ', result['food'],
-						', Location: ', result['location'],
-						', Time: ', result['time'], '\n');
-	});
-
+	var message = 'Here are your foods: \n';
+	for (var time in results) {
+		message = message.concat('\n', time, ':\n');
+		results[time].forEach(function(result) {
+			message = message.concat('Food: ', result['food'],
+						'\nLocation: ', result['location'], '\n');
+		});
+	}
 	Meteor.call('sendSMS', phone, message);
 };
 
 var validateRequests = function () {
-	ConfirmedRequests.find().forEach(function(request) {
+	ConfirmedRequests.find().fetch().forEach(function(request) {
 		var phone = request['number'];
-		var results = [];
-
-		request['request'].forEach(function(entry) {
+		var results = {};
+		
+		request['requests'].forEach(function(entry) {
 			var food = entry['food'];
 			var loc = entry['location'];
 
-			var items = Menus.find({'food': food}); 
+			var items = Menus.find({'food': food});
 			items.forEach(function(item) {
+
 				if (loc == 'All' || item['location'] == loc) {
 					// success! either all, or location matches
-					results.push({
+					var time = item['time'];
+					var meal = {
 						'food': food,
-						'location': loc,
-						'time': item['time'],
-					});
-				}
+						'location': item['location'],
+					};
 
+					if (time in results) {
+						results[time].push(meal)
+					} else {
+						results[time] = [meal];
+					}
+				}
 			});
 		});
-
-		sendRequests(phone, results);
+		if (Object.keys(results) != 0) {
+			sendRequests(phone, results);
+		}
 	});
 };
 /***************************/
 
 
+/************** Clear PendingRequests *************/
+var clearPending = function () {
+	PendingRequests.remove({});
+}
+/**********************************/
+
+
+/************** Add a ConfirmedRequest *************/
+// not tested
+var	addConfirmedRequest = function (number, food, location) {
+	var confirms = ConfirmedRequests.find({'number': number}); 
+	if (confirms.length == 0) {
+		// add a new number
+		ConfirmedRequests.insert({
+			number: number,
+			requests: {'food': food, 'location': location}
+		});
+	} else {
+		// update existing number's requests
+		ConfirmedRequests.update({'number': number}, 
+			{$addToSet: {'requests': {
+				'food': food,
+				'location': location,
+			}}});
+	}
+}
+/**********************************/
+
 
 /************** Scheduled Cron Jobs *************/
+// UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
 	events: {
 		"0 12 * * *" : validateRequests,
 		"0 10 * * *" : getMenus,
+		"0 8 * * *" : clearPending,
 		// add event to clear pendingrequests
 	}
 });
@@ -128,7 +166,7 @@ var cron = new Meteor.Cron({
 Meteor.methods({
 /******* SENDING OUT TEXTS *********/
 	sendSMS: function (number, message) {
-		Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/SMS/Messages.json',
+		Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/Messages.json',
 		{
 			params:{From:'+16098794415', To: number, Body: message},
 			auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
@@ -147,18 +185,13 @@ Meteor.methods({
 		});
 	},
 
-	addConfirmedRequest: function (number, food, location) {
-		ConfirmedRequests.insert({
-			number: number,
-			request: {food: food, location: location}
-		});
-	},
 //////////Needs updating
 	addRecord: function (food) {
 		Records.insert({
 			food: food
 		});
 	},
+
 
 /******* ADDING INITIAL REQUEST *********/
 	transferRequest: function (phone) {
@@ -168,6 +201,13 @@ Meteor.methods({
 		var location = requestsToMove.fetch().get("location");
 
 		Meteor.call("addConfirmedRequest", number, food, location;
+
 	},
 
+//************* TEMPORARY ******************//
+	testValidate: function() {
+		validateRequests();
+		//getMenus();
+	}
+//************* TEMPORARY ******************//
 });
