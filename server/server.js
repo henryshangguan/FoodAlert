@@ -16,6 +16,9 @@ Router.route('/response/', function () {
 
 	else if (text.toUpperCase() === "NO") {
 		sendSMS(phone, "Your request has been deleted.");
+		var requestToMove = PendingRequests.findOne({number: phone});
+		var id = requestToMove['_id'];
+		clearRequest(id);
 		}
 	},
 {where: 'server'});
