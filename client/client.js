@@ -135,6 +135,9 @@ PartialRequests.allow({
 Template.body.events({
 	"click .test": function () {
 		Meteor.call("testValidate");
+	},
+	"click .clearPending": function () {
+		Meteor.call("clearPendingRequests");
 	}
 });
 
@@ -151,15 +154,16 @@ Template.form2.events({
 	'submit ' : function () {
 		var location = AutoForm.getFieldValue("location", "requestForm");
 		var number = AutoForm.getFieldValue("number", "requestForm");
+		var numberAdded = "+1".concat(number);
 		var food = $('#food').val();
         
 		console.log(location);
-		console.log(number);
+		console.log(numberAdded);
 		console.log(food);
 
 		var message = "Food: " + food + " Location: " + location;
 		Meteor.call("sendSMS", number, message);
-		Meteor.call("addPendingRequest", number, food, location);
+		Meteor.call("addPendingRequest", numberAdded, food, location);
 		console.log("inserted");
 	}
 });
