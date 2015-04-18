@@ -4,15 +4,17 @@
 </head>
 
 <body>
-  <h1>Princeton FoodAlert!!</h1>
-  <button class="validate">test validate</button>
+  <h1>Princeton FoodAlert</h1>
+  <div class="headline">"No more missed-steaks"</div>
+<!--   <button class="validate">test validate</button>
   <button class="clearPending">Clear PendingRequests</button>
   <button class="clearConfirmed">Clear ConfirmedRequests</button>
-  <button class="getMenus">get Menus!</button>
+  <button class="getMenus">get Menus!</button> -->
+  <label class="control-label">Food</label>
   {{> form}}
   {{> form2}}
   
-  
+  <div id="footer">Contact us at jdshin@princeton.edu for questions, comments, and suggestions!</div>
 </body>
 
 <template name="test">
@@ -23,17 +25,12 @@
 </template>
 
 <template name="form">
-{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="Chat..."}}
-
-  <ul>
-    {{#each records}}
-        {{food}}
-    {{/each}}
-  </ul>
+{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
 </template>
 
 <template name="form2">
-{{> quickForm id="requestForm" collection="PartialRequests"}}
+  {{> quickForm id="requestForm" collection="PartialRequests"}}
+<!--     {{> afFieldInput placeholder="fdas"}} -->
 </template>
 
 
