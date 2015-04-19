@@ -280,7 +280,7 @@ Template.update.helpers({
 Template.sort.helpers({
 	RequestsToSort: function() {
 		var number = Blaze.getData();
-			return ConfirmedRequests.find({number: number});
+			return ConfirmedRequests.findOne({number: number})['requests'];
 	}
 });
 
