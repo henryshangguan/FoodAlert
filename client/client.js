@@ -40,13 +40,13 @@ PendingRequest = new SimpleSchema({
 PartialRequest = new SimpleSchema({
 	number : {
 		type: String,
-		label: "Phone Number",
+		label: "3. Enter your phone number",
 		min: 10,
 		max: 14
 	},
 	location: {
 		type: String,
-		label: "1. Select a Dining Hall",
+		label: "1. Select a dining hall",
 		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [
