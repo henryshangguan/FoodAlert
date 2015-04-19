@@ -16,7 +16,6 @@ Router.route('/response/', function () {
 	} else if (text.toUpperCase() === "NO") {
 			Meteor.call('sendSMS', phone, "--MealScout Request Deleted--" + "\nFood: " + food + "\nLocation: " + location);
 			var id = requestToMove['_id'];
-			console.log("deleting")
 			clearRequest(id);
 		}
 	},
