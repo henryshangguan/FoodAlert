@@ -154,7 +154,8 @@ Template.body.events({
 	},
 	"click .faq": function () {
 		bootbox.dialog({
-			message: "In construction!",
+			message: 
+			<p><b>The dining hall did not actually have my request food. What gives?</b></p>,
 			title: "Frequently Asked Questions",
 		});
 	},
