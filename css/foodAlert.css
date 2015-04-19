@@ -14,10 +14,15 @@ h1 {
 	text-align: center;
 }
 
-.headline {
+
+/* Carousel */
+.carousel {
+	margin-bottom: 3rem;
+}
+
+.carousel > div {
 	text-align: center;
 	font-style: italic;
-	margin-bottom: 3rem;
 }
 
 
