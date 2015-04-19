@@ -5,13 +5,16 @@ Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
 Router.route('/response/', function () {
 	var text = this.request.body.Body;
 	var phone = this.request.body.From;
-
+	var requestToMove = PendingRequests.findOne({number: phone});
+			if (requestToMove) {
+				var food = requestToMove['food'];
+				var location = requestToMove['location'];
+			}
 	if (text.toUpperCase() === "YES") {
-			Meteor.call("sendSMS", phone, "Your request has been saved.");
+			Meteor.call("sendSMS", phone, "--MealScout Request Confirmed--" + "\nFood: " + food + "\nLocation: " + location);
 			transferRequest(phone);
 	} else if (text.toUpperCase() === "NO") {
-			Meteor.call('sendSMS', phone, "Your request has been deleted.");
-			var requestToMove = PendingRequests.findOne({number: phone});
+			Meteor.call('sendSMS', phone, "--MealScout Request Deleted--" + "\nFood: " + food + "\nLocation: " + location);
 			var id = requestToMove['_id'];
 			console.log("deleting")
 			clearRequest(id);
@@ -81,8 +84,6 @@ var updateHistory = function (json) {
 	});
 };
 /*************************************/
-
-
 
 /******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
@@ -216,7 +217,7 @@ Meteor.methods({
 			location: location
 		});
 		Meteor.call("sendSMS", number, 
-			"text 'yes' to confirm:\nFood: " + food + "\nLocation: " + location);
+			"--MealScout Request--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'yes' to confirm or 'no' to delete.")
 	},
 
 	removeConfirmedRequest: function (id) {
