@@ -155,7 +155,7 @@ Template.body.events({
 	"click .faq": function () {
 		bootbox.dialog({
 			message: 
-			<p><b>The dining hall did not actually have my request food. What gives?</b></p>,
+			"<input type='text' value='The dining hall did not actually have my request food. What gives?'/>",
 			title: "Frequently Asked Questions",
 		});
 	},
