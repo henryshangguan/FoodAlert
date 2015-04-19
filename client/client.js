@@ -1,7 +1,9 @@
 Meteor.subscribe("ConfirmedRequests");
-Meteor.subscribe("PendingRequests");
-Meteor.subscribe("Menus");
+// Meteor.subscribe("PendingRequests");
+// Meteor.subscribe("Menus");
 Meteor.subscribe("Records");
+// Meteor.subscribe("NoRequests");
+// Meteor.subscribe("PendingDeletion");
 
 PendingRequest = new SimpleSchema({
 	number : {
@@ -96,6 +98,8 @@ PendingRequests.attachSchema(PendingRequest);
 ConfirmedRequests.attachSchema(ConfirmedRequest);
 Records.attachSchema(Record);
 PartialRequests.attachSchema(PartialRequest);
+NoRequests.attachSchema(ConfirmedRequest);
+PendingDeletion.attachSchema(ConfirmedRequest);
 
 PendingRequests.allow({
 	update: function () {
@@ -124,13 +128,6 @@ PartialRequests.allow({
 	}
 });
 
-// Template.body.events({
-
-// 	"click .sendPin": function () {
-// 		var pin = Math.round(Math.random() * 1000);
-// 		Meteor.call("sendSMS", pin);
-//    	}
-// )};
 
 Template.body.events({
 	"click .validate": function () {
@@ -144,6 +141,26 @@ Template.body.events({
 	},
 	"click .getMenus": function () {
 		Meteor.call("getMenus");
+	},
+	"click .seeRequests": function () {
+		bootbox.prompt("Enter your phone number", function (result) {
+			var number = result.replace(/[^a-zA-Z0-9]/g, '');
+			if (result == null) {
+				return false;
+			}
+			else if (ConfirmedRequests.find({number: number}).count() === 0) {
+				bootbox.alert({
+					size: 'medium',
+					message: "No records found.",
+					callback: function() {}
+				})
+			}
+
+			else {
+				var number = "+1".concat(number);
+				Blaze.renderWithData(Template.sort, number, document.body);
+			}
+		})
 	}
 });
 
@@ -158,8 +175,20 @@ Template.body.events({
 
 Template.form2.events({
 	'submit ' : function () {
-		var location = AutoForm.getFieldValue("location", "requestForm");
-		var number = AutoForm.getFieldValue("number", "requestForm");
+		var food = $('#food').val();
+
+		if (Records.find({food: food}).count() === 0) {
+			bootbox.alert({ 
+    			size: 'medium',
+    			message: "Not a valid food.", 
+    			callback: function(){ /* your callback code */ }
+			})
+		}
+
+		else {
+					var location = AutoForm.getFieldValue("location", "requestForm");
+		var result = AutoForm.getFieldValue("number", "requestForm");
+		var number = result.replace(/[^a-zA-Z0-9]/g, '');
 		var numberAdded = "+1".concat(number);
 		var food = $('#food').val();
         
@@ -168,6 +197,7 @@ Template.form2.events({
 		// console.log(food);
 
 		Meteor.call("addPendingRequest", numberAdded, food, location);
+	}
 	}
 });
 
@@ -192,3 +222,37 @@ Template.form.helpers({
   }
 });
 
+Template.update.helpers({
+	updateDoc: function(number) {
+		return ConfirmedRequests.findOne({number: number});
+	}
+});
+
+Template.sort.helpers({
+	RequestsToSort: function() {
+		var number = Blaze.getData();
+			return ConfirmedRequests.find({number: number});
+		
+	}
+});
+
+Template.sortable.events({
+  'click .close': function (event, template) {
+    // `this` is the data context set by the enclosing block helper (#each, here)
+    // NEED TO MAKE THIS INTO A REVERSE TRANSFER
+    var id = template.collection.findOne(this._id)['_id']['_str'];
+    console.log(id);
+    Meteor.call("reverseTransferRequest", id);
+    template.collection.remove(this._id);
+    // // custom code, working on a specific collection
+    // if (Attributes.find().count() === 0) {
+    //   Meteor.setTimeout(function () {
+    //     Attributes.insert({
+    //       name: 'Not nice to delete the entire list! Add some attributes instead.',
+    //       type: 'String',
+    //       order: 0
+    //     })
+    //   }, 1000);
+    // }
+  }
+});

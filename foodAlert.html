@@ -9,9 +9,11 @@
   <button class="clearPending">Clear PendingRequests</button>
   <button class="clearConfirmed">Clear ConfirmedRequests</button>
   <button class="getMenus">get Menus!</button>
+  <button class="seeRequests">See My Requests</button>
   {{> form}}
   {{> form2}}
-  
+
+ 
   
 </body>
 
@@ -41,6 +43,52 @@
     <span style="color: {{color}}; background-color: {{bg}};"></span> {{food}}
 </template>
 
+<template name="update">
+{{#autoForm id="UpdateForm" type="update" collection="ConfirmedRequests" doc=updateDoc autosave="false"}}
+<!--   {{> afQuickField name="firstName"}} -->
+  {{> afQuickField name="number"}}
+<!--   {{> afQuickField name="age"}} -->
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">
+    Submit
+    </button>
+  </div>
+{{/autoForm}}
+</template>
+
+<template name="list">
+<ul id="items">
+    <li>item 1</li>
+    <li>item 2</li>
+    <li>item 3</li>
+</ul>
+</template>
+
+<template name="sort">
+<div class="row">
+    <div class="list-pair col-sm-12">
+
+     <div class="sortable target" id="object">
+     
+<span class="test">Your Requests</span>
+{{#sortable items=RequestsToSort animation="100" handle=".sortable-handle"}}
+ {{> sortableItemTarget}}
+ {{/sortable}}
+</div>
+</div>
+</div>
+  
+ </template>
+
+<template name="sortableItemTarget">
+  <div data-id="{{order}}" class="sortable-item removable well well-sm">
+    <i class="sortable-handle mdi-action-view-headline pull-right"></i>
+    <span class="food">Food: {{food}} ---- Location: {{location}}</span>
+    <button type="button" class="close" text="delete" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+    </button>
+  </div>
+</template>
 
 <!-- {{#autoForm id="requestForm" schema=Schemas.PendingRequest}}
 	<div>{{> afFieldInput name='food'}} </div>

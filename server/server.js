@@ -19,6 +19,15 @@ Router.route('/response/', function () {
 	},
 {where: 'server'});
 
+/***********PUBLISH COLLECTIONS*********/
+Meteor.publish('Records', function(){
+    return Records.find();
+});
+
+Meteor.publish('ConfirmedRequests', function(){
+    return ConfirmedRequests.find();
+});
+
 /********** Updating Menus Daily *******/
 var getMenus = function () {
 	Meteor.http.get('https://api.parse.com/1/classes/Menu', {
@@ -208,6 +217,30 @@ Meteor.methods({
 			"text yes to confirm:\nFood: " + food + "\nLocation: " + location);
 	},
 
+	reverseTransferRequest: function (id) {
+		console.log("method called");
+		var number = ConfirmedRequests.findOne(id)['number'];
+		var food = ConfirmedRequests.findOne(id)['food'];
+		var location = ConfirmedRequests.findOne(id)['location'];
+
+		console.log(number);
+		console.log(food);
+		console.log(location);
+		// Move to Pending Deletion
+		
+
+	// var requestToMove = PendingRequests.findOne({number: phone});
+	// if (requestToMove) {
+	// 	var number = requestToMove['number'];
+	// 	var food = requestToMove['food'];
+	// 	var location = requestToMove['location'];
+	// 	var id = requestToMove['_id'];
+
+	// 	addConfirmedRequest(number, food, location);
+	// 	clearRequest(id);
+	//}
+},
+
 //////////Needs updating
 	addRecord: function (food) {
 		Records.insert({
@@ -215,6 +248,7 @@ Meteor.methods({
 		});
 	},
 
+	
 //************* TEMPORARY ******************//
 	testValidate: function() {
 		validateRequests();
