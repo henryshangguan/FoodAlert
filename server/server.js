@@ -11,10 +11,10 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 			}
 	if (text.toUpperCase() === "YES") {
-			Meteor.call("sendSMS", phone, "--MealScout Request Confirmed--" + "\nFood: " + food + "\nLocation: " + location);
+			Meteor.call("sendSMS", phone, "--MealScout Confirmation--" + "\nFood: " + food + "\nLocation: " + location);
 			transferRequest(phone);
 	} else if (text.toUpperCase() === "NO") {
-			Meteor.call('sendSMS', phone, "--MealScout Request Deleted--" + "\nFood: " + food + "\nLocation: " + location);
+			Meteor.call('sendSMS', phone, "--MealScout Deletion--" + "\nFood: " + food + "\nLocation: " + location);
 			var id = requestToMove['_id'];
 			clearRequest(id);
 		}

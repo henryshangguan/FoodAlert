@@ -112,7 +112,6 @@
     <div class="list-pair col-sm-12">
 
      <div class="sortable target" id="object">
-     
 <span class="test">Your Requests</span>
 {{#sortable items=RequestsToSort animation="100" handle=".sortable-handle"}}
  {{> sortableItemTarget}}
@@ -126,7 +125,7 @@
 <template name="sortableItemTarget">
   <div data-id="{{order}}" class="sortable-item removable well well-sm">
     <i class="sortable-handle mdi-action-view-headline pull-right"></i>
-    <span class="food">Food: {{food}} ---- Location: {{location}}</span>
+    <span class="food">Food: {{food}}   Location: {{location}}</span>
     <button type="button" class="close" text="delete" data-dismiss="alert">
       <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
     </button>
