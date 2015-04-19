@@ -1,6 +1,6 @@
 Meteor.subscribe("ConfirmedRequests");
 // Meteor.subscribe("PendingRequests");
-Meteor.subscribe("Menus");
+// Meteor.subscribe("Menus");
 Meteor.subscribe("Records");
 // Meteor.subscribe("NoRequests");
 // Meteor.subscribe("PendingDeletion");
@@ -153,7 +153,7 @@ Template.body.events({
 	},
 	"click .faq": function () {
 		bootbox.dialog({
-			message: "yo",
+			message: "In construction!",
 			title: "Frequently Asked Questions",
 		});
 	},
