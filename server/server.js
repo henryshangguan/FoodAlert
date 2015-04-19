@@ -198,10 +198,10 @@ var cron = new Meteor.Cron({
 Meteor.methods({
 /******* SENDING OUT TEXTS *********/
 	sendSMS: function (number, message) {
-		Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/AC22ef9acc63bf954b3e9fdff5762f0bfc/Messages.json',
+		Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/ACfb52ce55aa5c747ccc7a524c4dd1af16/Messages.json',
 		{
-			params:{From:'+16098794415', To: number, Body: message},
-			auth: 'AC22ef9acc63bf954b3e9fdff5762f0bfc:5eca12596eaa0ccb2e73d1aa6aa419c0',
+			params:{From:'+16092514626', To: number, Body: message},
+			auth: 'ACfb52ce55aa5c747ccc7a524c4dd1af16:a63a2fb29aa7980553da6522b84aacd3',
 			headers: {'content-type':'application/x-www-form-urlencoded'}
 		}, function () {
 			console.log(arguments)
