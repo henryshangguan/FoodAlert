@@ -57,7 +57,7 @@ PartialRequest = new SimpleSchema({
 		type: String,
 		label: "Phone Number",
 		min: 10,
-		max: 10
+		max: 14
 	}
 });
 
@@ -73,7 +73,7 @@ ConfirmedRequest = new SimpleSchema({
 		type: String,
 		label: "Phone Number",
 		min: 10,
-		max: 10
+		max: 12
 	},
 	requests: {
 		type: Array,
@@ -102,28 +102,34 @@ NoRequests.attachSchema(ConfirmedRequest);
 PendingDeletion.attachSchema(ConfirmedRequest);
 
 PendingRequests.allow({
-	update: function () {
-		return true;
-	},
 	insert: function () {
 		return true;
 	}
 });
 
-Records.allow({
-	update: function () {
-		return true;
-	},
-	insert: function () {
-		return true;
-	}
-});
+// Records.allow({
+// 	update: function () {
+// 		return true;
+// 	},
+// 	insert: function () {
+// 		return true;
+// 	}
+// });
 
-PartialRequests.allow({
+// PartialRequests.allow({
+// 	update: function () {
+// 		return true;
+// 	},
+// 	insert: function () {
+// 		return true;
+// 	}
+// });
+
+ConfirmedRequests.allow({
 	update: function () {
 		return true;
 	},
-	insert: function () {
+	remove: function () {
 		return true;
 	}
 });
@@ -141,6 +147,12 @@ Template.body.events({
 	},
 	"click .getMenus": function () {
 		Meteor.call("getMenus");
+	},
+	"click .faq": function () {
+		bootbox.dialog({
+			message: "yo",
+			title: "Frequently Asked Questions",
+		});
 	},
 	"click .seeRequests": function () {
 		bootbox.prompt("Enter your phone number", function (result) {
@@ -175,6 +187,7 @@ Template.body.events({
 
 Template.form2.events({
 	'submit ' : function () {
+		event.preventDefault();
 		var food = $('#food').val();
 
 		if (Records.find({food: food}).count() === 0) {
@@ -191,12 +204,17 @@ Template.form2.events({
 		var number = result.replace(/[^a-zA-Z0-9]/g, '');
 		var numberAdded = "+1".concat(number);
 		var food = $('#food').val();
+
+		$('#food').val('');
+		$('#location').val('');
         
 		// console.log(location);
 		// console.log(numberAdded);
 		// console.log(food);
 
 		Meteor.call("addPendingRequest", numberAdded, food, location);
+
+		bootbox.alert("A text message has been sent to your number. Please reply 'yes' to confirm.");
 	}
 	}
 });

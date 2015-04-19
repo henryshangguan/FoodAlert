@@ -214,7 +214,7 @@ Meteor.methods({
 			location: location
 		});
 		Meteor.call("sendSMS", number, 
-			"text yes to confirm:\nFood: " + food + "\nLocation: " + location);
+			"text 'yes' to confirm:\nFood: " + food + "\nLocation: " + location);
 	},
 
 	reverseTransferRequest: function (id) {
@@ -227,7 +227,9 @@ Meteor.methods({
 		console.log(food);
 		console.log(location);
 		// Move to Pending Deletion
-		
+		PendingDeletion.insert({number: number, food: food, location: location});
+		Meteor.call("sendSMS", number, "text 'delete' to confirm:\nCancel request for " + food + " at " + location);
+		bootbox.message("A message has been sent to your phone. Please respond 'delete' to confirm deletion.");
 
 	// var requestToMove = PendingRequests.findOne({number: phone});
 	// if (requestToMove) {
@@ -241,6 +243,9 @@ Meteor.methods({
 	//}
 },
 
+	removeConfirmedRequest: function(id) {
+		ConfirmedRequests.remove(id);
+	},
 //////////Needs updating
 	addRecord: function (food) {
 		Records.insert({
