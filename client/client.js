@@ -38,6 +38,12 @@ PendingRequest = new SimpleSchema({
 });
 
 PartialRequest = new SimpleSchema({
+	number : {
+		type: String,
+		label: "Phone Number",
+		min: 10,
+		max: 14
+	},
 	location: {
 		type: String,
 		label: "Dining Hall",
@@ -52,13 +58,8 @@ PartialRequest = new SimpleSchema({
 			{label: "All", value: "All"}
 			]
 		}
-	},
-	number : {
-		type: String,
-		label: "Phone Number",
-		min: 10,
-		max: 14
 	}
+	
 });
 
 Record = new SimpleSchema({
@@ -160,9 +161,12 @@ Template.body.events({
 	"click .seeRequests": function () {
 		bootbox.prompt("Enter your phone number", function (result) {
 			var number = result.replace(/[^a-zA-Z0-9]/g, '');
+			number = "+1".concat(number);
+			console.log(number);
 			if (result == null) {
 				return false;
 			}
+
 			else if (ConfirmedRequests.find({number: number}).count() === 0) {
 				bootbox.alert({
 					size: 'medium',
@@ -172,7 +176,6 @@ Template.body.events({
 			}
 
 			else {
-				var number = "+1".concat(number);
 				Blaze.renderWithData(Template.sort, number, document.body);
 			}
 		})
@@ -188,7 +191,7 @@ Template.body.events({
 // 	}
 // });
 
-Template.form2.events({
+Template.form.events({
 	'submit ' : function () {
 		event.preventDefault();
 		var food = $('#food').val();
@@ -233,7 +236,30 @@ Template.form.helpers({
           collection: Records,
           field: 'food',
           matchAll: true,
-          template: Template.foodFill
+          template: Template.foodFill,
+          selector: function (match) {
+          	regex = new RegExp(match, 'i');
+          	var location = AutoForm.getFieldValue("location", "requestForm");
+          	console.log(location);
+          	if (location === "Forbes") {
+          		return {$and: [{'food': regex}, {'Forbes': true}]}
+          	}
+          	else if (location === "Center for Jewish Life") {
+          		return {$and: [{'food': regex}, {'Center for Jewish Life': true}]}
+          	}
+          	else if (location === "Rocky/Mathey") {
+          		return {$and: [{'food': regex}, {'Rocky/Mathey': true}]}
+          	}
+          	else if (location === "Whitman") {
+          		return {$and: [{'food': regex}, {'Whitman': true}]}
+          	}
+          	else if (location === "Wu/Wilcox") {
+          		return {$and: [{'food': regex}, {'Wu/Wilcox': true}]}
+          	}
+          	else {
+          		return {$and: [{'food': regex}, {'All': true}]}
+          	}
+          }
         }
         ] 
     };
@@ -253,7 +279,6 @@ Template.sort.helpers({
 	RequestsToSort: function() {
 		var number = Blaze.getData();
 			return ConfirmedRequests.find({number: number});
-		
 	}
 });
 
@@ -264,7 +289,8 @@ Template.sortable.events({
     var id = template.collection.findOne(this._id)['_id']['_str'];
     console.log(id);
     Meteor.call("reverseTransferRequest", id);
-    template.collection.remove(this._id);
+    Meteor.call("removeConfirmedRequest", id);
+    //template.collection.remove(this._id);
     // // custom code, working on a specific collection
     // if (Attributes.find().count() === 0) {
     //   Meteor.setTimeout(function () {

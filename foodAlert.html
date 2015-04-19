@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <h1>Princeton MealScout</h1>
+  <h1>MealScout</h1>
   <div class="headline">"No missed-steaks"</div>
   <button class="seeRequests">My Saved Requests</button>
   <button class="faq">FAQs</button>
@@ -18,9 +18,10 @@
 <!--   <button class="getMenus">get Menus!</button>
   <button class="clearMenus">clear Menus!</button> -->
 <!--   <button class="seeRequests">See My Requests</button> -->
-<label for="nW7kbnhv7qGFxCe3D" class="control-label">Food</label>
+
+  <label class="control-label">Food</label>
   {{> form}}
-  {{> form2}}
+<!--   {{> form2}} -->
 
   
   <div id="footer">Contact us at jdshin@princeton.edu for questions, comments, and suggestions!</div>
@@ -35,10 +36,8 @@
 
 <template name="form">
 {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
-</template>
 
-<template name="form2">
-  {{> quickForm id="requestForm" collection="PartialRequests"}}
+{{> quickForm id="requestForm" collection="PartialRequests"}}
 <!--     {{> afFieldInput placeholder="fdas"}} -->
 </template>
 
