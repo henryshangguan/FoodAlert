@@ -68,11 +68,13 @@ var updateHistory = function (json) {
 			if (Records.findOne({'food': item})) {
 				var record = {};
 				record[loc] = true;
+				record['All'] = true;
 				Records.update({'food': item}, {$set: record});
 			} else {
 				var record = {};
 				record['food'] = item;
 				record[loc] = true;
+				record['All'] = ture;
 				Records.insert(record);
 			}
 		});
@@ -217,6 +219,18 @@ Meteor.methods({
 			"text 'yes' to confirm:\nFood: " + food + "\nLocation: " + location);
 	},
 
+	removeConfirmedRequest: function (id) {
+		var number = ConfirmedRequests.findOne(id)['number'];
+		var food = ConfirmedRequests.findOne(id)['food'];
+		var location = ConfirmedRequests.findOne(id)['location'];
+
+		ConfirmedRequests.update({'number': number}, 
+			{$pull: {'requests': {
+				'food': food,
+				'location': location,
+		}}});
+	},
+
 	reverseTransferRequest: function (id) {
 		console.log("method called");
 		var number = ConfirmedRequests.findOne(id)['number'];
@@ -226,7 +240,14 @@ Meteor.methods({
 		console.log(number);
 		console.log(food);
 		console.log(location);
-		// Move to Pending Deletion
+		
+
+		ConfirmedRequests.update({'number': number}, 
+			{$pull: {'requests': {
+				'food': food,
+				'location': location,
+		}}});
+
 		PendingDeletion.insert({number: number, food: food, location: location});
 		Meteor.call("sendSMS", number, "text 'delete' to confirm:\nCancel request for " + food + " at " + location);
 		bootbox.message("A message has been sent to your phone. Please respond 'delete' to confirm deletion.");
@@ -243,9 +264,6 @@ Meteor.methods({
 	//}
 },
 
-	removeConfirmedRequest: function(id) {
-		ConfirmedRequests.remove(id);
-	},
 //////////Needs updating
 	addRecord: function (food) {
 		Records.insert({
