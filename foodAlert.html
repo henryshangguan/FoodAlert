@@ -19,7 +19,6 @@
   <button class="clearMenus">clear Menus!</button> -->
 <!--   <button class="seeRequests">See My Requests</button> -->
 
-  <label class="control-label">Food</label>
   {{> form}}
 <!--   {{> form2}} -->
 
@@ -35,10 +34,15 @@
 </template>
 
 <template name="form">
-{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
-
-{{> quickForm id="requestForm" collection="PartialRequests"}}
-<!--     {{> afFieldInput placeholder="fdas"}} -->
+{{#autoForm collection="PartialRequests" id="requestForm" type="insert"}}
+  <fieldset>
+    {{> afQuickField name='location'}}
+     <label class="control-label">Food</label>
+    {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
+    {{> afQuickField name='number'}}
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  {{/autoForm}}
 </template>
 
 
@@ -60,11 +64,14 @@
 </template>
 
 <template name="list">
-<ul id="items">
-    <li>item 1</li>
-    <li>item 2</li>
-    <li>item 3</li>
-</ul>
+{{#autoForm collection="PartialRequests" id="requestForm2" type="insert"}}
+  <fieldset>
+    {{> afQuickField name='location'}}
+    {{> inputAutocomplete settings=settings id="food2" class="form-control" name="food2" placeholder="e.g. Chicken Pot Pie"}}
+    {{> afQuickField name='number'}}
+  </fieldset>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  {{/autoForm}}
 </template>
 
 <template name="sort">

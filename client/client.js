@@ -257,7 +257,7 @@ Template.form.helpers({
           		return {$and: [{'food': regex}, {'Wu/Wilcox': true}]}
           	}
           	else {
-          		return {$and: [{'food': regex}, {'All': true}]}
+          		return {'food': regex}
           	}
           }
         }
@@ -268,6 +268,7 @@ Template.form.helpers({
   	return Records.find().fetch();
   }
 });
+
 
 Template.update.helpers({
 	updateDoc: function(number) {
