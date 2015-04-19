@@ -154,29 +154,26 @@ Template.body.events({
 	},
 	"click .faq": function () {
 		bootbox.dialog({
-			message: 
-			"<input type='text' value='The dining hall did not actually have my request food. What gives?'/>",
+			message:
+			"<p><b>The dining hall did not actually have my requested food. What gives?</b></p>",
 			title: "Frequently Asked Questions",
 		});
 	},
 	"click .seeRequests": function () {
 		bootbox.prompt("Enter your phone number", function (result) {
+			if (result == null) {
+				return true;
+			}
 			var number = result.replace(/[^a-zA-Z0-9]/g, '');
 			number = "+1".concat(number);
-			console.log(number);
-			if (result == null) {
-				return false;
-			}
-
-			else if (ConfirmedRequests.find({number: number}).count() === 0) {
+			if (ConfirmedRequests.find({number: number}).count() === 0) {
 				bootbox.alert({
 					size: 'medium',
 					message: "No records found.",
 					callback: function() {}
+				
 				})
-			}
-
-			else {
+			} else {
 				Blaze.renderWithData(Template.sort, number, document.body);
 			}
 		})
