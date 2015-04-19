@@ -46,7 +46,7 @@ PartialRequest = new SimpleSchema({
 	},
 	location: {
 		type: String,
-		label: "Dining Hall",
+		label: "1. Select a Dining Hall",
 		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [

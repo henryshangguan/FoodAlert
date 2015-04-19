@@ -1,15 +1,18 @@
 <head>
   <title>MealScout</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <!--<script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+ 
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 
 <body>
   <h1>MealScout</h1>
   <div class="headline">"No missed-steaks"</div>
-  <button class="seeRequests">My Saved Requests</button>
+
   <button class="faq">FAQs</button>
 <!--   <button class="validate">test validate</button>
   <button class="clearPending">Clear PendingRequests</button>
@@ -21,8 +24,11 @@
   {{> form}}
 <!--   {{> form2}} -->
 
-  
+  <div class="savedRequests_div">
+    <button class="seeRequests">My Saved Requests</button>
+  </div>
   <div id="footer">Contact us at jdshin@princeton.edu for questions, comments, and suggestions!</div>
+
 </body>
 
 <template name="test">
@@ -40,7 +46,9 @@
     {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
     {{> afQuickField name='number'}}
   </fieldset>
+  <div class="button_div">
   <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
   {{/autoForm}}
 </template>
 

@@ -1,5 +1,11 @@
 body {
-	margin: 8% 30%;
+	margin: 8% 30% !important;
+}
+
+@media (max-width: 767px) {
+	body {
+		margin: 15% 15% !important;
+	}
 }
 
 
@@ -14,31 +20,37 @@ h1 {
 	margin-bottom: 3rem;
 }
 
-.seeRequests {
-	position: absolute;
-    top: 0px;
-    right: 50px;
+
+/************* BUTTONS *************/
+button {
+	background-color: orange !important;
+	color: white !important;
+	font-style: bold !important;
+
+	border: none !important;
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+
+    padding: 0.7rem !important;
 }
 
+/* FAQ Button */
 .faq {
 	position: absolute;
     top: 0px;
     right: 0px;
 }
 
-/* Submit button */
-div:nth-child(3) {
+/* Submit Button */
+.button_div {
 	text-align: center;
 }
 
-button {
-	background-color: orange !important;
-	color: white !important;
-	font-style: bold !important;
-	border: none !important;
-	-moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
+/* Saved Requests Button */
+.savedRequests_div {
+	text-align: center;
+	margin-top: 1rem;
 }
 
 
