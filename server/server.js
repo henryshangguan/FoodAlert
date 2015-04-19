@@ -73,6 +73,7 @@ var updateHistory = function (json) {
 				var record = {};
 				record['food'] = item;
 				record[loc] = true;
+				record['All'] = true;
 				Records.insert(record);
 			}
 		});
@@ -260,6 +261,9 @@ Meteor.methods({
 	},
 	getMenus: function() {
 		getMenus();
+	},
+	clearMenus: function() {
+		Menus.remove({});
 	},
 	clearPendingRequests: function() {
 		PendingRequests.remove({});

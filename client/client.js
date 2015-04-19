@@ -1,6 +1,6 @@
 Meteor.subscribe("ConfirmedRequests");
 // Meteor.subscribe("PendingRequests");
-// Meteor.subscribe("Menus");
+Meteor.subscribe("Menus");
 Meteor.subscribe("Records");
 // Meteor.subscribe("NoRequests");
 // Meteor.subscribe("PendingDeletion");
@@ -147,6 +147,9 @@ Template.body.events({
 	},
 	"click .getMenus": function () {
 		Meteor.call("getMenus");
+	},
+	"click .clearMenus": function () {
+		Meteor.call("clearMenus");
 	},
 	"click .faq": function () {
 		bootbox.dialog({
