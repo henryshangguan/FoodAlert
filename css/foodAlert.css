@@ -21,6 +21,12 @@ h1 {
 }
 
 
+/* Phone Number Entering */
+.phone_div {
+	margin-top: 15px;
+}
+
+
 /************* BUTTONS *************/
 button {
 	background-color: orange !important;
@@ -57,9 +63,4 @@ button {
 }
 
 
-/* Footer */
-#footer {
-	text-align: center;
-	margin-top: 3rem;
-}
 

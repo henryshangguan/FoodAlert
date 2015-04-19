@@ -3,6 +3,7 @@
  <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!--   // <script src="jquery.tinycarousel.min.js"></script> -->
 
 <!--   // <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
  
@@ -13,6 +14,14 @@
 
 <body>
   <h1>MealScout</h1>
+
+  <div id="slider1">
+    <ul class="list">
+      <li>one</li>
+      <li>two</li>
+    </ul>
+  </div>
+
   <div class="headline">"No missed-steaks"</div>
 
   <button class="faq">FAQs</button>
@@ -27,9 +36,8 @@
 <!--   {{> form2}} -->
 
   <div class="savedRequests_div">
-    <button class="seeRequests">My Saved Requests</button>
+    <button class="seeRequests">View Saved Requests</button>
   </div>
-  <div id="footer">Contact us at jdshin@princeton.edu for questions, comments, and suggestions!</div>
 
 </body>
 
@@ -46,7 +54,9 @@
     {{> afQuickField name='location'}}
      <label class="control-label">2. Enter a menu item</label>
     {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
-    {{> afQuickField name='number'}}
+    <div class="phone_div">
+      {{> afQuickField name='number'}}
+    </div>
   </fieldset>
   <div class="submit_div">
     <button type="submit" class="btn btn-primary">Submit</button>

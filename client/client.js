@@ -155,7 +155,10 @@ Template.body.events({
 	"click .faq": function () {
 		bootbox.dialog({
 			message:
-			"<p><b>The dining hall did not actually have my requested food. What gives?</b></p>",
+			"<p><b>The dining hall did not actually have my requested food. What gives?</b></p> \
+			<p>Sorry! Sometimes the dining halls have innaccurate menus. We're currently talking with them to try and fix the issue!</p><br> \
+			<p><b>I love MealScout! How can I contact you/send you gifts?</b></p> \
+			<p>Contact us at princetonmealscout@gmail.com for questions, comments, and suggestions!</p><br>",
 			title: "Frequently Asked Questions",
 		});
 	},
