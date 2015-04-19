@@ -18,5 +18,11 @@ mrt:twilio
 aldeed:simple-schema
 miguelalarcos:afwrap-xautocomplete
 mizzao:autocomplete
+<<<<<<< HEAD
 richsilv:owl-carousel
 rubaxa:sortable
+=======
+autopublish
+insecure
+webapp
+>>>>>>> 4c7f722925f75ecab0ffd6ee288ac434fde987b8

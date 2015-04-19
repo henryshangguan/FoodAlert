@@ -1,11 +1,16 @@
 <head>
   <title>foodAlert</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+  <!-- <script src="jquery.ui.touch-punch.min.js"></script> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 </head>
 
 <body>
-  <h1>Princeton FoodAlert!!</h1>
-  <button class="validate">test validate</button>
+  <h1>Princeton FoodAlert</h1>
+  <div class="headline">"No missed-steaks"</div>
+<!--   <button class="validate">test validate</button>
   <button class="clearPending">Clear PendingRequests</button>
   <button class="clearConfirmed">Clear ConfirmedRequests</button>
   <button class="getMenus">get Menus!</button>
@@ -13,29 +18,28 @@
   {{> form}}
   {{> form2}}
 
- 
+  <button class="getMenus">get Menus!</button> -->
+  <label class="control-label">Food</label>
+  {{> form}}
+  {{> form2}}
   
+  <div id="footer">Contact us at jdshin@princeton.edu for questions, comments, and suggestions!</div>
 </body>
 
 <template name="test">
-	<span class="text">Hello World!!!!</span>
+	<span class="text">Hello World!!!</span>
 </template>
 
 <template name="serverFile">
 </template>
 
 <template name="form">
-{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="Chat..."}}
-
-  <ul>
-    {{#each records}}
-        {{food}}
-    {{/each}}
-  </ul>
+{{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
 </template>
 
 <template name="form2">
-{{> quickForm id="requestForm" collection="PartialRequests"}}
+  {{> quickForm id="requestForm" collection="PartialRequests"}}
+<!--     {{> afFieldInput placeholder="fdas"}} -->
 </template>
 
 
