@@ -11,13 +11,30 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 			}
 	if (text.toUpperCase() === "YES") {
-			Meteor.call("sendSMS", phone, "--MealScout Confirmation--" + "\nFood: " + food + "\nLocation: " + location);
+			Meteor.call("sendSMS", phone, "--MealScout Request Confirmation--" + "\nFood: " + food + "\nLocation: " + location) + "\nRequest Saved";
 			transferRequest(phone);
 	} else if (text.toUpperCase() === "NO") {
-			Meteor.call('sendSMS', phone, "--MealScout Deletion--" + "\nFood: " + food + "\nLocation: " + location);
+			Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--" + "\nFood: " + food + "\nLocation: " + location) + "\nRequest Deleted";
 			var id = requestToMove['_id'];
 			clearRequest(id);
-		}
+	} else if (text.toUpperCase() === "DELETE") {
+		requestToMove = PendingDeletion.findOne({number: phone});
+			if (requestToMove) {
+				var food = requestToMove['food'];
+				var location = requestToMove['location'];
+				Meteor.call("removeConfirmedRequest", phone, food, location);	
+			}
+		Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--\nFood: " + food + "\nLocation: " + location) + "\nRequest Deleted";
+		
+	} else if (text.toUpperCase() === "SAVE") {
+		requestToMove = PendingDeletion.findOne({number: phone});
+			if (requestToMove) {
+				var food = requestToMove['food'];
+				var location = requestToMove['location'];
+				PendingDeletion.remove({number: phone, food: food, location: location});
+			}
+		Meteor.call('sendSMS', phone, "--MealScout Request Confirmation--\nFood: " + food + "\nLocation: " + location) + "\nRequest Saved";
+	}
 	},
 {where: 'server'});
 
@@ -209,7 +226,7 @@ Meteor.methods({
 	},
 
 	newUser: function (number) {
-		Meteor.call("sendSMS", number, "--MealScout Intro--\nWelcome to MealScout! Once you've confirmed your request, MealScout will text you on the day your food is being served in the dining hall you specified. Have a great day!");
+		Meteor.call("sendSMS", number, "--MealScout Intro--\nWelcome to MealScout! If you confirm your request, MealScout will text you on the day your food is being served in the dining hall you specified. If you wish to block messages from this number, just text 'cancel'. Have a great day!");
 	},
 
 /******* ADDING INITIAL REQUEST *********/
@@ -223,38 +240,37 @@ Meteor.methods({
 			"--MealScout Request--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'yes' to confirm or 'no' to delete.")
 	},
 
-	removeConfirmedRequest: function (id) {
-		var number = ConfirmedRequests.findOne(id)['number'];
-		var food = ConfirmedRequests.findOne(id)['food'];
-		var location = ConfirmedRequests.findOne(id)['location'];
+	removeConfirmedRequest: function (number, food, location) {
+		var arr = ConfirmedRequests.findOne({number: number})['requests'];
+		var index = -1;
+		for (i = 0; i < arr.length; i++) {
+			if (arr[i].food == food) {
+				index = i;
+			}
+		}
 
-		ConfirmedRequests.update({'number': number}, 
-			{$pull: {'requests': {
-				'food': food,
-				'location': location,
-		}}});
+		arr.splice(index, 1);
+		var record = {number: number, requests: arr};
+
+		ConfirmedRequests.update({number: number}, {$set: record});
+		// ConfirmedRequests.update({'number': number}, 
+		// 	{$pull: {requests: {
+		// 		food: food,
+		// 		location: location
+		// }}});
 	},
 
-	reverseTransferRequest: function (id) {
-		console.log("method called");
-		var number = ConfirmedRequests.findOne(id)['number'];
-		var food = ConfirmedRequests.findOne(id)['food'];
-		var location = ConfirmedRequests.findOne(id)['location'];
-
-		console.log(number);
-		console.log(food);
-		console.log(location);
-		
-
-		ConfirmedRequests.update({'number': number}, 
-			{$pull: {'requests': {
-				'food': food,
-				'location': location,
-		}}});
-
+	reverseTransferRequest: function (number, food) {
+		var arr = ConfirmedRequests.findOne({number: number})['requests'];
+		var location = '';
+		for (i = 0; i < arr.length; i++) {
+			if (arr[i].food == food) {
+				location = arr[i].location;
+			}
+		}
 		PendingDeletion.insert({number: number, food: food, location: location});
-		Meteor.call("sendSMS", number, "text 'delete' to confirm:\nCancel request for " + food + " at " + location);
-		bootbox.message("A message has been sent to your phone. Please respond 'delete' to confirm deletion.");
+		Meteor.call("sendSMS", number, "--MealScout Deletion Request--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'delete' to confirm deletion or 'save' to cancel deletion.");
+		//bootbox.alert({size: 'medium', message: "A message has been sent to your phone. Please respond 'delete' to confirm deletion.", callback: function () {}});
 
 	// var requestToMove = PendingRequests.findOne({number: phone});
 	// if (requestToMove) {
@@ -292,6 +308,9 @@ Meteor.methods({
 	clearConfirmedRequests: function() {
 		ConfirmedRequests.remove({});
 	},
+	removePending: function() {
+		PendingDeletion.remove({});
+	}
 
 //************* TEMPORARY ******************//
 });

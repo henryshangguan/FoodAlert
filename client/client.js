@@ -2,6 +2,7 @@ Meteor.subscribe("ConfirmedRequests");
 // Meteor.subscribe("PendingRequests");
 // Meteor.subscribe("Menus");
 Meteor.subscribe("Records");
+Meteor.subscribe("PendingDeletion");
 // Meteor.subscribe("NoRequests");
 // Meteor.subscribe("PendingDeletion");
 
@@ -135,6 +136,14 @@ ConfirmedRequests.allow({
 	}
 });
 
+PendingDeletion.allow({
+	insert: function () {
+		return true;
+	},
+	remove: function () {
+		return true;
+	}
+})
 
 Template.body.events({
 	"click .validate": function () {
@@ -281,7 +290,8 @@ Template.sort.helpers({
 			return ConfirmedRequests.findOne({number: number})['requests'];
 	},
 	getNumber: function() {
-		var number = Blaze.getData();;
+		var number = Blaze.getData();
+		Session.set('savedNumber', number);
 		return number;
 	}
 });
@@ -290,9 +300,12 @@ Template.sortable.events({
   'click .close': function (event, template) {
     // `this` is the data context set by the enclosing block helper (#each, here)
     // NEED TO MAKE THIS INTO A REVERSE TRANSFER
-    var id = template.collection.findOne(this._id)['_id']['_str'];
-    Meteor.call("reverseTransferRequest", id);
-    Meteor.call("removeConfirmedRequest", id);
+    var number = Session.get('savedNumber');
+    var food = this['food'];
+
+    Meteor.call("reverseTransferRequest", number, food);
+    bootbox.alert("A confirmation message has been sent to your number. Please reply 'delete' to confirm this deletion or 'save' to cancel deletion.");
+    // Meteor.call("removeConfirmedRequest", food);
     //template.collection.remove(this._id);
     // // custom code, working on a specific collection
     // if (Attributes.find().count() === 0) {
