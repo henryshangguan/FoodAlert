@@ -208,6 +208,10 @@ Meteor.methods({
 		});
 	},
 
+	newUser: function (number) {
+		Meteor.call("sendSMS", number, "--MealScout Intro--\nWelcome to MealScout! Once you've confirmed your request, MealScout will text you on the day your food is being served in the dining hall you specified. Have a great day!");
+	},
+
 /******* ADDING INITIAL REQUEST *********/
 	addPendingRequest: function (number, food, location) {
 		PendingRequests.insert({

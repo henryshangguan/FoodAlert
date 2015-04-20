@@ -40,13 +40,13 @@ PendingRequest = new SimpleSchema({
 PartialRequest = new SimpleSchema({
 	number : {
 		type: String,
-		label: "3. Enter your phone number for text notifications",
+		label: " ",
 		min: 10,
 		max: 14
 	},
 	location: {
 		type: String,
-		label: "1. Select a dining hall",
+		label: ' ',
 		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [
@@ -206,7 +206,7 @@ Template.form.events({
 		}
 
 		else {
-					var location = AutoForm.getFieldValue("location", "requestForm");
+		var location = AutoForm.getFieldValue("location", "requestForm");
 		var result = AutoForm.getFieldValue("number", "requestForm");
 		var number = result.replace(/[^a-zA-Z0-9]/g, '');
 		var numberAdded = "+1".concat(number);
@@ -219,9 +219,12 @@ Template.form.events({
 		// console.log(numberAdded);
 		// console.log(food);
 
-		Meteor.call("addPendingRequest", numberAdded, food, location);
+		if (ConfirmedRequests.find({number: numberAdded}).count() === 0) {
+			Meteor.call("newUser", numberAdded);
+		}
 
-		bootbox.alert("A text message has been sent to your number. Please reply 'yes' to confirm.");
+		bootbox.alert("A confirmation message has been sent to your number. Please reply 'yes' to confirm this request.");
+		Meteor.call("addPendingRequest", numberAdded, food, location);
 	}
 	}
 });
@@ -281,6 +284,10 @@ Template.sort.helpers({
 	RequestsToSort: function() {
 		var number = Blaze.getData();
 			return ConfirmedRequests.findOne({number: number})['requests'];
+	},
+	getNumber: function() {
+		var number = Blaze.getData();;
+		return number;
 	}
 });
 
