@@ -1,12 +1,9 @@
 <head>
   <title>MealScout</title>
-  <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.css"/>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.0/slick.min.js"></script>
 
-  <!--   // <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
 
   <script type="text/javascript">
     $(document).ready(function() {
@@ -46,7 +43,6 @@
   <!--   <button class="seeRequests">See My Requests</button> -->
 
   {{> form}}
-  <!--   {{> form2}} -->
 
   <div class="savedRequests_div">
     <button class="seeRequests">View Saved Requests</button>
@@ -55,15 +51,9 @@
 </body>
 
 
-<template name="test">
-	<span class="text">Hello World!!!</span>
-</template>
-
-<template name="serverFile">
-</template>
-
 <template name="form">
   {{#autoForm collection="PartialRequests" id="requestForm" type="insert"}}
+  
   <fieldset>
     <div class="dhall_div">
       <label class="label_text"><b>1. Select a dining hall </b><i>to filter menu options</i></label>
@@ -79,8 +69,8 @@
       <label class="label_text"><b>3. Enter your phone number </b><i>for text message alerts</i></label>
     </div>
     {{> afQuickField name='number'}}
-
   </fieldset>
+
   <div class="submit_div">
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>

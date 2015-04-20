@@ -200,7 +200,7 @@ Template.form.events({
 		if (Records.find({food: food}).count() === 0) {
 			bootbox.alert({ 
     			size: 'medium',
-    			message: "Not a valid food.", 
+    			message: "You didn't enter a valid food! Make sure you spell it exactly the way it shows up in the search.", 
     			callback: function(){ /* your callback code */ }
 			})
 		}
@@ -214,10 +214,6 @@ Template.form.events({
 
 		$('#food').val('');
 		$('#location').val('');
-        
-		// console.log(location);
-		// console.log(numberAdded);
-		// console.log(food);
 
 		if (ConfirmedRequests.find({number: numberAdded}).count() === 0) {
 			Meteor.call("newUser", numberAdded);

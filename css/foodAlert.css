@@ -1,5 +1,7 @@
+/* General */
 body {
 	margin: 8% 30% !important;
+	/*background-image: url("http://freehdwalls.net/wp-content/uploads/cake-dessert-table-hd-wallpaper.jpg");*/
 }
 
 @media (max-width: 767px) {
@@ -97,5 +99,3 @@ button {
 	color: black !important;
 	font-style: bold !important;
 }
-
-
