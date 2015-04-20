@@ -40,7 +40,7 @@ PendingRequest = new SimpleSchema({
 PartialRequest = new SimpleSchema({
 	number : {
 		type: String,
-		label: "3. Enter your phone number",
+		label: "3. Enter your phone number for text notifications",
 		min: 10,
 		max: 14
 	},
