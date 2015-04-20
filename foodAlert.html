@@ -18,7 +18,7 @@
       });
     });
   </script>
-  
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Receive text notifications when your favorite foods are served in Princeton's dining halls!">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -65,30 +65,26 @@
 <template name="form">
   {{#autoForm collection="PartialRequests" id="requestForm" type="insert"}}
   <fieldset>
-    <div class="dhall_text">
-      <label class="control-label">1. Select a dining hall</label>
-      <label class="control-label3"> to filter menu options</label>
+    <div class="dhall_div">
+      <label class="label_text"><b>1. Select a dining hall </b><i>to filter menu options</i></label>
     </div>
     {{> afQuickField name='location'}}
 
-    <div class="menu_text">
-     <label class="control-label">2. Enter a menu item</label>
-     <label class="control-label2"> to track</label>
-   </div>
-   {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
-   
-   <div class="phone_div">
-    <div class="phone_text">
-      <label class="control-label">3. Enter your phone number </label>
-      <label class="control-label3"> for text message alerts</label>
+    <div class="menu_div">
+      <label class="label_text"><b>2. Search for a menu item </b><i>to track</i></label>
+      {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
+    </div>
+
+    <div class="phone_div">
+      <label class="label_text"><b>3. Enter your phone number </b><i>for text message alerts</i></label>
     </div>
     {{> afQuickField name='number'}}
+
+  </fieldset>
+  <div class="submit_div">
+    <button type="submit" class="btn btn-primary">Submit</button>
   </div>
-</fieldset>
-<div class="submit_div">
-  <button type="submit" class="btn btn-primary">Submit</button>
-</div>
-{{/autoForm}}
+  {{/autoForm}}
 </template>
 
 
