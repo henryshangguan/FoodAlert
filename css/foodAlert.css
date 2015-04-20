@@ -32,6 +32,16 @@ h1 {
 	margin-top: 15px;
 }
 
+.control-label2 {
+	font-weight: 200;
+	font-style: italic;
+}
+
+.control-label3 {
+	font-weight: 200;
+	font-style: italic;
+	margin-bottom: -10px;
+}
 
 /************* BUTTONS *************/
 button {

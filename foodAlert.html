@@ -65,10 +65,16 @@
 <template name="form">
 {{#autoForm collection="PartialRequests" id="requestForm" type="insert"}}
   <fieldset>
+  <label class="control-label">1. Select a dining hall</label>
+  <label class="control-label3"> to filter menu options</label>
     {{> afQuickField name='location'}}
+
      <label class="control-label">2. Enter a menu item</label>
+     <label class="control-label2"> to track</label>
     {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
+    
     <div class="phone_div">
+    <label class="control-label">3. Enter your phone number</label><label class="control-label3"> for text message alerts</label>
       {{> afQuickField name='number'}}
     </div>
   </fieldset>
@@ -96,7 +102,7 @@
 {{/autoForm}}
 </template>
 
-<template name="list">
+<!-- <template name="list">
 {{#autoForm collection="PartialRequests" id="requestForm2" type="insert"}}
   <fieldset>
     {{> afQuickField name='location'}}
@@ -105,14 +111,14 @@
   </fieldset>
   <button type="submit" class="btn btn-primary">Submit</button>
   {{/autoForm}}
-</template>
+</template> -->
 
 <template name="sort">
 <div class="row">
     <div class="list-pair col-sm-12">
 
      <div class="sortable target" id="object">
-<span class="test">Requests for NUMBER</span>
+<span class="saved_requests"><b>Saved requests for {{getNumber}}:</b></span>
 {{#sortable items=RequestsToSort animation="100" handle=".sortable-handle"}}
  {{> sortableItemTarget}}
  {{/sortable}}
