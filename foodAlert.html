@@ -1,40 +1,40 @@
 <head>
   <title>MealScout</title>
- <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.5.0/slick.min.js"></script>
 
-<!--   // <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+  <!--   // <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
 
-<script type="text/javascript">
-  $(document).ready(function() {
-    $('.carousel').slick({
-      infinite: true,
-      arrows: false,
-      autoplay: true,
-      autoplaySpeed: 5000,
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('.carousel').slick({
+        infinite: true,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 5000,
+      });
     });
-  });
-</script>
- 
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta name="description" content="Receive text notifications when your favorite foods are served in Princeton's dining halls!">
- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </script>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Receive text notifications when your favorite foods are served in Princeton's dining halls!">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 
 <body>
   <h1>MealScout</h1>
 
- <div class="carousel">
-  <div>"No missed-steaks!"</div>
-  <div>"Orange you glad for MealScout?"</div>
-  <div>"Nacho average app!"</div>
-  <div>"I relish the fact that you’ve mustard the strength to ketchup to me."</div>
-  <div>"Berry useful!"</div>
-  <div>"The frustrated cannibal threw up his hands."</div>
- </div>
+  <div class="carousel">
+    <div>"No missed-steaks!"</div>
+    <div>"Orange you glad for MealScout?"</div>
+    <div>"Nacho average app!"</div>
+    <div>"I relish the fact that you’ve mustard the strength to ketchup to me."</div>
+    <div>"Berry useful!"</div>
+    <div>"The frustrated cannibal threw up his hands."</div>
+  </div>
 
 
   <button class="faq">FAQs</button>
@@ -43,10 +43,10 @@
   <button class="clearConfirmed">Clear ConfirmedRequests</button> -->
 <!--   <button class="getMenus">get Menus!</button>
   <button class="clearMenus">clear Menus!</button> -->
-<!--   <button class="seeRequests">See My Requests</button> -->
+  <!--   <button class="seeRequests">See My Requests</button> -->
 
   {{> form}}
-<!--   {{> form2}} -->
+  <!--   {{> form2}} -->
 
   <div class="savedRequests_div">
     <button class="seeRequests">View Saved Requests</button>
@@ -63,43 +63,50 @@
 </template>
 
 <template name="form">
-{{#autoForm collection="PartialRequests" id="requestForm" type="insert"}}
+  {{#autoForm collection="PartialRequests" id="requestForm" type="insert"}}
   <fieldset>
-  <label class="control-label">1. Select a dining hall</label>
-  <label class="control-label3"> to filter menu options</label>
+    <div class="dhall_text">
+      <label class="control-label">1. Select a dining hall</label>
+      <label class="control-label3"> to filter menu options</label>
+    </div>
     {{> afQuickField name='location'}}
 
+    <div class="menu_text">
      <label class="control-label">2. Enter a menu item</label>
      <label class="control-label2"> to track</label>
-    {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
-    
-    <div class="phone_div">
-    <label class="control-label">3. Enter your phone number</label><label class="control-label3"> for text message alerts</label>
-      {{> afQuickField name='number'}}
+   </div>
+   {{> inputAutocomplete settings=settings id="food" class="form-control" name="food" placeholder="e.g. Chicken Pot Pie"}}
+   
+   <div class="phone_div">
+    <div class="phone_text">
+      <label class="control-label">3. Enter your phone number </label>
+      <label class="control-label3"> for text message alerts</label>
     </div>
-  </fieldset>
-  <div class="submit_div">
-    <button type="submit" class="btn btn-primary">Submit</button>
+    {{> afQuickField name='number'}}
   </div>
-  {{/autoForm}}
+</fieldset>
+<div class="submit_div">
+  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+{{/autoForm}}
 </template>
 
 
 <template name="foodFill">
-    <span style="color: {{color}}; background-color: {{bg}};"></span> {{food}}
+  <span style="color: {{color}}; background-color: {{bg}};"></span> {{food}}
 </template>
 
 <template name="update">
-{{#autoForm id="UpdateForm" type="update" collection="ConfirmedRequests" doc=updateDoc autosave="false"}}
-<!--   {{> afQuickField name="firstName"}} -->
+  {{#autoForm id="UpdateForm" type="update" collection="ConfirmedRequests" doc=updateDoc autosave="false"}}
+  <!--   {{> afQuickField name="firstName"}} -->
   {{> afQuickField name="number"}}
-<!--   {{> afQuickField name="age"}} -->
+  <!--   {{> afQuickField name="age"}} -->
   <div class="form-group">
     <button type="submit" class="btn btn-primary">
-    Submit
+      Submit
     </button>
   </div>
-{{/autoForm}}
+  {{/autoForm}}
 </template>
 
 <!-- <template name="list">
@@ -114,19 +121,21 @@
 </template> -->
 
 <template name="sort">
-<div class="row">
+  <div class="row">
     <div class="list-pair col-sm-12">
 
      <div class="sortable target" id="object">
-<span class="saved_requests"><b>Saved requests for {{getNumber}}:</b></span>
-{{#sortable items=RequestsToSort animation="100" handle=".sortable-handle"}}
- {{> sortableItemTarget}}
- {{/sortable}}
+      <div class="saved_requests_title">
+        <span class="saved_requests"><b>Saved requests for {{getNumber}}:</b></span>
+      </div>
+      {{#sortable items=RequestsToSort animation="100" handle=".sortable-handle"}}
+      {{> sortableItemTarget}}
+      {{/sortable}}
+    </div>
+  </div>
 </div>
-</div>
-</div>
-  
- </template>
+
+</template>
 
 <template name="sortableItemTarget">
   <div data-id="{{order}}" class="sortable-item removable well well-sm">
@@ -146,10 +155,10 @@
   <div>
     <button type="submit">Submit</button>
   </div>
-{{/autoForm}} -->
+  {{/autoForm}} -->
 	<!-- {{#autoForm id="form" schema=Schemas.PendingRequest}}
   {{> afQuickFields}}
   <div>
     <button type="submit">Submit</button>
   </div>
-{{/autoForm}} -->
+  {{/autoForm}} -->

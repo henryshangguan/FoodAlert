@@ -27,6 +27,23 @@ h1 {
 }
 
 
+/* Hacking the labels */
+.dhall_text, .phone_text {
+	margin-bottom: -24px;
+}
+
+.form-group > .control-label {
+	color: white;
+	opacity: 0;
+}
+
+
+/* Saved requests title */
+.saved_requests_title {
+	margin: 1rem !important;
+}
+
+
 /* Phone Number Entering */
 .phone_div {
 	margin-top: 15px;
@@ -82,7 +99,7 @@ button {
 .close {
 	margin-top: -8px !important;
 	background-color: #F5F5F5 !important;
-	color: orange !important;
+	color: black !important;
 	font-style: bold !important;
 }
 
