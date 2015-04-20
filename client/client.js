@@ -241,7 +241,6 @@ Template.form.helpers({
           selector: function (match) {
           	regex = new RegExp(match, 'i');
           	var location = AutoForm.getFieldValue("location", "requestForm");
-          	console.log(location);
           	if (location === "Forbes") {
           		return {$and: [{'food': regex}, {'Forbes': true}]}
           	}
@@ -289,7 +288,6 @@ Template.sortable.events({
     // `this` is the data context set by the enclosing block helper (#each, here)
     // NEED TO MAKE THIS INTO A REVERSE TRANSFER
     var id = template.collection.findOne(this._id)['_id']['_str'];
-    console.log(id);
     Meteor.call("reverseTransferRequest", id);
     Meteor.call("removeConfirmedRequest", id);
     //template.collection.remove(this._id);

@@ -9,6 +9,7 @@ body {
 }
 
 
+
 /* Title */
 h1 {
 	text-align: center;
@@ -64,8 +65,15 @@ button {
 /* Saved Requests Button */
 .savedRequests_div {
 	text-align: center;
-	margin-top: 1rem;
+	margin: 1rem 0;
 }
 
+/* Saved Requests Items Delete Buttons */
+.close {
+	margin-top: -8px !important;
+	background-color: #F5F5F5 !important;
+	color: orange !important;
+	font-style: bold !important;
+}
 
 
