@@ -205,7 +205,7 @@ var clearRequest = function (id) {
 var cron = new Meteor.Cron({
 	events: {
 		//"0 12 * * *" : validateRequests,
-		"16 6 * * *": validateRequests,
+		"19 6 * * *": validateRequests,
 		"0 10 * * *" : getMenus,
 		"0 8 * * *" : clearPending,
 	}
