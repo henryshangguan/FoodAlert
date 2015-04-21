@@ -112,7 +112,8 @@ var sendRequests = function(phone, results) {
 						'\nLocation: ', result['location'], '\n');
 		});
 	}
-	Meteor.call('sendSMS', phone, message);
+	console.log(message);
+	//Meteor.call('sendSMS', phone, message);
 };
 
 var validateRequests = function () {
