@@ -210,7 +210,7 @@ var cron = new Meteor.Cron({
 		//"0 12 * * *" : validateRequests,
 		//"0 10 * * *" : getMenus,
 		//"0 8 * * *" : clearPending,
-		"6 16 * * *" : validateRequests,
+		"9 16 * * *" : validateRequests,
 		"35 15 * * *" : getMenus,
 	}
 });
