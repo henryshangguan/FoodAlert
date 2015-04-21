@@ -49,6 +49,7 @@ Meteor.publish('ConfirmedRequests', function(){
 
 /********** Updating Menus Daily *******/
 var getMenus = function () {
+	console.log("Getting Menus")
 	Meteor.http.get('https://api.parse.com/1/classes/Menu', {
 		headers: {'content-type': 'application/json',
 		'X-Parse-Application-Id': 'PtiTO2iCbTqWljw2NBSFfsypu4ZxR8gJexnHPoea',
@@ -115,6 +116,7 @@ var sendRequests = function(phone, results) {
 };
 
 var validateRequests = function () {
+	console.log("Validating Requests");
 	ConfirmedRequests.find().fetch().forEach(function(request) {
 		var phone = request['number'];
 		var results = {};
@@ -193,7 +195,7 @@ var transferRequest = function (phone) {
 }
 /**********************************/
 
-/******* REMOVE TRANSFERRED REQUEST *********/
+/******* REMOVE SPECIFIC TRANSFERRED REQUEST *********/
 var clearRequest = function (id) {
 	PendingRequests.remove(id);
 }
@@ -204,9 +206,12 @@ var clearRequest = function (id) {
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
 	events: {
-		"0 12 * * *" : validateRequests,
-		"0 10 * * *" : getMenus,
-		"0 8 * * *" : clearPending,
+		//"0 12 * * *" : validateRequests,
+		//"0 10 * * *" : getMenus,
+		//"0 8 * * *" : clearPending,
+		"36 15 * * *" : validateRequests,
+		"35 15 * * *" : getMenus,
+		"34 15 * * *" : clearPending,
 	}
 });
 /**********************************/
