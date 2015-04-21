@@ -124,9 +124,11 @@ var validateRequests = function () {
 			var loc = entry['location'];
 
 			var items = Menus.find({'food': food});
-			console.log(food);
-			console.log(loc);
-			console.log(items.fetch().length);
+			if (items.fetch().length > 0) {
+				console.log(food);
+				console.log(loc);
+				console.log(items.fetch().length)
+			}
 			items.forEach(function(item) {
 
 				if (loc == 'All' || item['location'] == loc) {
