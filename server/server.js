@@ -103,7 +103,7 @@ var updateHistory = function (json) {
 
 /******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
-	var message = 'Here are your foods: \n';
+	var message = '--MealScout Reminder--';
 	for (var time in results) {
 		message = message.concat('\n', time, ':\n');
 		results[time].forEach(function(result) {
