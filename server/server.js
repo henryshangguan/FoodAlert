@@ -124,11 +124,6 @@ var validateRequests = function () {
 			var loc = entry['location'];
 
 			var items = Menus.find({'food': food});
-			if (items.fetch().length > 0) {
-				console.log(food);
-				console.log(loc);
-				console.log(items.fetch().length)
-			}
 			items.forEach(function(item) {
 
 				if (loc == 'All' || item['location'] == loc) {
@@ -148,9 +143,7 @@ var validateRequests = function () {
 			});
 		});
 		if (Object.keys(results) != 0) {
-			//sendRequests(phone, results);
-			console.log("REQUESTS FOUND");
-			console.log(results);
+			sendRequests(phone, results);
 		}
 	});
 };
