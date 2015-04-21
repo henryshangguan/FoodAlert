@@ -212,7 +212,6 @@ var cron = new Meteor.Cron({
 		//"0 8 * * *" : clearPending,
 		"36 15 * * *" : validateRequests,
 		"35 15 * * *" : getMenus,
-		"34 15 * * *" : clearPending,
 	}
 });
 /**********************************/
