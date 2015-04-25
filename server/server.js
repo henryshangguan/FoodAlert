@@ -11,10 +11,10 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 			}
 	if (text.toUpperCase() === "YES") {
-			Meteor.call("sendSMS", phone, "--MealScout Request Confirmation--" + "\nFood: " + food + "\nLocation: " + location) + "\nRequest Saved";
+			Meteor.call("sendSMS", phone, "--MealScout Request Confirmation--" + "\nFood: " + food + "\nLocation: " + location + "\nRequest Saved");
 			transferRequest(phone);
 	} else if (text.toUpperCase() === "NO") {
-			Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--" + "\nFood: " + food + "\nLocation: " + location) + "\nRequest Deleted";
+			Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--" + "\nFood: " + food + "\nLocation: " + location + "\nRequest Deleted");
 			var id = requestToMove['_id'];
 			clearRequest(id);
 	} else if (text.toUpperCase() === "DELETE") {
@@ -24,7 +24,7 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 				Meteor.call("removeConfirmedRequest", phone, food, location);	
 			}
-		Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--\nFood: " + food + "\nLocation: " + location) + "\nRequest Deleted";
+		Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--\nFood: " + food + "\nLocation: " + location + "\nRequest Deleted");
 		
 	} else if (text.toUpperCase() === "SAVE") {
 		requestToMove = PendingDeletion.findOne({number: phone});
@@ -33,7 +33,7 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 				PendingDeletion.remove({number: phone, food: food, location: location});
 			}
-		Meteor.call('sendSMS', phone, "--MealScout Request Confirmation--\nFood: " + food + "\nLocation: " + location) + "\nRequest Saved";
+		Meteor.call('sendSMS', phone, "--MealScout Request Confirmation--\nFood: " + food + "\nLocation: " + location + "\nRequest Saved");
 	}
 	},
 {where: 'server'});
@@ -103,7 +103,7 @@ var updateHistory = function (json) {
 
 /******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
-	var message = 'Here are your foods: \n';
+	var message = '--MealScout Reminder--';
 	for (var time in results) {
 		message = message.concat('\n', time, ':\n');
 		results[time].forEach(function(result) {

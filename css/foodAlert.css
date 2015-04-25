@@ -28,7 +28,6 @@ body {
 }
 
 
-
 /* Title */
 h1 {
 	text-align: center;
@@ -57,21 +56,33 @@ h1 {
 	border-radius: 15px;
 }
 
-/* Phone Number Entering */
+/* Hacking the labels */
+.dhall_div {
+	margin-bottom: -24px;
+}
+
 .phone_div {
 	margin-top: 15px;
+	margin-bottom: -24px;
 }
 
-.control-label2 {
-	font-weight: 200;
-	font-style: italic;
+.form-group > .control-label {
+	color: white;
+	opacity: 0;
 }
 
-.control-label3 {
-	font-weight: 200;
-	font-style: italic;
-	margin-bottom: -10px;
+.label_text {
+	font-weight: normal !important;
 }
+
+
+
+/* Saved requests title */
+.saved_requests_title {
+	margin: 1rem !important;
+}
+
+
 
 /************* BUTTONS *************/
 button {
@@ -112,8 +123,6 @@ button {
 .close {
 	margin-top: -8px !important;
 	background-color: #F5F5F5 !important;
-	color: orange !important;
+	color: black !important;
 	font-style: bold !important;
 }
-
-
