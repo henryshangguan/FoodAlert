@@ -1,5 +1,18 @@
+html { 
+  background: berries.jpg no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body {
 	margin: 8% 30% !important;
+	background: url(turkey.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 @media (max-width: 767px) {
@@ -8,13 +21,18 @@ body {
 	}
 }
 
+@media only screen and (max-device-width: 480px) {
+  body {
+    background-image: url(pizza2_mobile.jpg);
+   }
+}
+
 
 
 /* Title */
 h1 {
 	text-align: center;
 }
-
 
 /* Carousel */
 .carousel {
@@ -26,6 +44,18 @@ h1 {
 	font-style: italic;
 }
 
+.insdieRectangle: before {
+
+}
+
+.insideRectangle {
+	background-color: rgba(256, 256, 256, 0.9);
+	padding-right: 20px;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	border-radius: 15px;
+}
 
 /* Phone Number Entering */
 .phone_div {
