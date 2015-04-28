@@ -210,7 +210,7 @@ var clearRequest = function (id) {
 // Ping app every minute
 setInterval(function() {
 	console.log("pinging mealscout!");
-	Meteor.http.get("http://www.mealscout.herokuapp.com");
+	Meteor.http.get("http://www.princetonmealscout.com");
 }, 20000);
 
 // UTC Time: 4 hours ahead of EST
