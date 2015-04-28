@@ -211,7 +211,7 @@ var clearRequest = function (id) {
 setInterval(function() {
 	console.log("pinging mealscout!");
 	Meteor.http.get("http://www.mealscout.herokuapp.com");
-}, 10000);
+}, 20000);
 
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
