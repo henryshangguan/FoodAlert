@@ -1,7 +1,18 @@
-/* General */
+html { 
+  background: berries.jpg no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 body {
 	margin: 8% 30% !important;
-	/*background-image: url("http://freehdwalls.net/wp-content/uploads/cake-dessert-table-hd-wallpaper.jpg");*/
+	background: url(breakfast.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 @media (max-width: 767px) {
@@ -10,13 +21,17 @@ body {
 	}
 }
 
+@media only screen and (max-device-width: 480px) {
+  body {
+    background-image: url(pizza2_mobile.jpg);
+   }
+}
 
 
 /* Title */
 h1 {
 	text-align: center;
 }
-
 
 /* Carousel */
 .carousel {
@@ -28,6 +43,45 @@ h1 {
 	font-style: italic;
 }
 
+.headline {
+ /*  font-family: 'Lobster', cursive;*/
+   /*font-family: 'Shadows Into Light', cursive;*/
+   /*font-family: 'Kaushan Script', cursive;*/
+   /*font-family: 'Permanent Marker', cursive;*/
+   /*font-family: 'Playball', cursive;*/
+/*   font-family: 'Great Vibes', cursive;*/
+   font-family: 'Pacifico', cursive;
+}
+
+.label_text {
+   font-family: 'Raleway', sans-serif;
+}
+
+.secondary_text {
+   font-family: 'Open Sans Condensed', sans-serif;
+}
+
+.insideRectangle {
+   
+	background-color: rgba(256, 256, 256, 0.9);
+	padding-right: 20px;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	border-radius: 15px;
+}
+
+.row {
+   margin: 2% 1% !important;
+   background-color: rgba(256, 256, 256, 0.95);
+   margin-top: 10px;
+   padding-right: -10px;
+/*   padding-right: 10px;
+   padding-left: 10px;
+   padding-top: 5px;
+   padding-bottom: 10px;*/
+   /*border-radius: 15px;*/
+}
 
 /* Hacking the labels */
 .dhall_div {
