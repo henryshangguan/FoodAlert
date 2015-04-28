@@ -284,7 +284,7 @@ Meteor.methods({
 			}
 		}
 		PendingDeletion.insert({number: number, food: food, location: location});
-		Meteor.call("sendSMS", number, "--MealScout Deletion--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'delete' to confirm deletion or 'save' to cancel deletion.");
+		Meteor.call("sendSMS", number, "--MealScout Deletion--%0a" + "Food: " + food + "%0aLocation: " + location + "%0aReply 'delete' to confirm deletion or 'save' to cancel deletion." + "\n\n\n\nhi" + "%0a%0a%0ahi again");
 		//bootbox.alert({size: 'medium', message: "A message has been sent to your phone. Please respond 'delete' to confirm deletion.", callback: function () {}});
 
 	// var requestToMove = PendingRequests.findOne({number: phone});
