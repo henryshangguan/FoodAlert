@@ -11,10 +11,10 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 			}
 	if (text.toUpperCase() === "YES") {
-			Meteor.call("sendSMS", phone, "--MealScout Request Confirmation--" + "\nFood: " + food + "\nLocation: " + location + "\nRequest Saved");
+			Meteor.call("sendSMS", phone, "--MealScout Confirmation--" + "\nFood: " + food + "\nLocation: " + location + "\nRequest Saved");
 			transferRequest(phone);
 	} else if (text.toUpperCase() === "NO") {
-			Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--" + "\nFood: " + food + "\nLocation: " + location + "\nRequest Deleted");
+			Meteor.call('sendSMS', phone, "--MealScout Confirmation--" + "\nFood: " + food + "\nLocation: " + location + "\nRequest Deleted");
 			var id = requestToMove['_id'];
 			clearRequest(id);
 	} else if (text.toUpperCase() === "DELETE") {
@@ -24,7 +24,7 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 				Meteor.call("removeConfirmedRequest", phone, food, location);	
 			}
-		Meteor.call('sendSMS', phone, "--MealScout Deletion Confirmation--\nFood: " + food + "\nLocation: " + location + "\nRequest Deleted");
+		Meteor.call('sendSMS', phone, "--MealScout Confirmation--\nFood: " + food + "\nLocation: " + location + "\nRequest Deleted");
 		
 	} else if (text.toUpperCase() === "SAVE") {
 		requestToMove = PendingDeletion.findOne({number: phone});
@@ -33,7 +33,7 @@ Router.route('/response/', function () {
 				var location = requestToMove['location'];
 				PendingDeletion.remove({number: phone, food: food, location: location});
 			}
-		Meteor.call('sendSMS', phone, "--MealScout Request Confirmation--\nFood: " + food + "\nLocation: " + location + "\nRequest Saved");
+		Meteor.call('sendSMS', phone, "--MealScout Confirmation--\nFood: " + food + "\nLocation: " + location + "\nRequest Saved");
 	}
 	},
 {where: 'server'});
@@ -284,7 +284,7 @@ Meteor.methods({
 			}
 		}
 		PendingDeletion.insert({number: number, food: food, location: location});
-		Meteor.call("sendSMS", number, "--MealScout Deletion Request--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'delete' to confirm deletion or 'save' to cancel deletion.");
+		Meteor.call("sendSMS", number, "--MealScout Deletion--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'delete' to confirm deletion or 'save' to cancel deletion.");
 		//bootbox.alert({size: 'medium', message: "A message has been sent to your phone. Please respond 'delete' to confirm deletion.", callback: function () {}});
 
 	// var requestToMove = PendingRequests.findOne({number: phone});
