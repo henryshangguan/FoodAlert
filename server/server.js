@@ -114,8 +114,10 @@ var sendRequests = function(phone, results) {
 						'\nLocation: ', result['location'], '\n');
 		});
 	}
-	console.log(message);
-	//Meteor.call('sendSMS', phone, message);
+	Meteor.call('sendSMS', phone, message);
+	// if (phone == '+16095539543') {
+	// 	Meteor.call('sendSMS', phone, 'testing scheduling');
+	// }
 };
 
 var validateRequests = function () {
@@ -158,6 +160,7 @@ var validateRequests = function () {
 /************** Clear PendingRequests *************/
 var clearPending = function () {
 	PendingRequests.remove({});
+	PendingDeletion.remove({});
 }
 /**********************************/
 
@@ -206,14 +209,21 @@ var clearRequest = function (id) {
 
 
 /************** Scheduled Cron Jobs *************/
+// Ping app every minute
+setInterval(Meteor.bindEnvironment(function() {
+	//console.log("pinging mealscout!");
+	Meteor.http.get("http://www.princetonmealscout.com");
+}), 60000);
+
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
 	events: {
-		// "0 12 * * *" : validateRequests,
-		// "0 10 * * *" : getMenus,
-		// "0 8 * * *" : clearPending,
+		"0 12 * * *" : validateRequests,
+		"0 10 * * *" : getMenus,
+		"0 8 * * *" : clearPending,
 		 // "32 12 * * *" : validateRequests,
 		 // "31 12 * * *" : getMenus,
+		//"15 5 * * *" : validateRequests,
 	}
 });
 /**********************************/
