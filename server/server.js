@@ -112,11 +112,10 @@ var sendRequests = function(phone, results) {
 						'\nLocation: ', result['location'], '\n');
 		});
 	}
-	console.log(message);
-	//Meteor.call('sendSMS', phone, message);
-	if (phone == '+16095539543') {
-		Meteor.call('sendSMS', phone, 'testing scheduling');
-	}
+	Meteor.call('sendSMS', phone, message);
+	// if (phone == '+16095539543') {
+	// 	Meteor.call('sendSMS', phone, 'testing scheduling');
+	// }
 };
 
 var validateRequests = function () {
@@ -218,7 +217,7 @@ setInterval(function() {
 var cron = new Meteor.Cron({
 	events: {
 		"0 12 * * *" : validateRequests,
-		"50 11 * * *" : getMenus,
+		"0 10 * * *" : getMenus,
 		"0 8 * * *" : clearPending,
 		 // "32 12 * * *" : validateRequests,
 		 // "31 12 * * *" : getMenus,
