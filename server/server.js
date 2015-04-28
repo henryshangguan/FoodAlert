@@ -2,6 +2,8 @@ Router.onBeforeAction(Iron.Router.bodyParser.urlencoded({
     extended: false
 }));
 
+Router.rote('/sitemap.xml', function() {});
+
 Router.route('/response/', function () {
 	var text = this.request.body.Body;
 	var phone = this.request.body.From;
