@@ -210,12 +210,12 @@ var clearRequest = function (id) {
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
 	events: {
-		// "0 12 * * *" : validateRequests,
-		// "0 10 * * *" : getMenus,
-		// "0 8 * * *" : clearPending,
+		"0 12 * * *" : validateRequests,
+		"50 11 * * *" : getMenus,
+		"40 11 * * *" : clearPending,
 		 // "32 12 * * *" : validateRequests,
 		 // "31 12 * * *" : getMenus,
-		"40 4 * * *" : validateRequests,
+		"15 5 * * *" : validateRequests,
 	}
 });
 /**********************************/
