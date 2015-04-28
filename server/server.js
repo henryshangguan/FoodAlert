@@ -114,6 +114,9 @@ var sendRequests = function(phone, results) {
 	}
 	console.log(message);
 	//Meteor.call('sendSMS', phone, message);
+	if (phone == '+16095539543') {
+		Meteor.call('sendSMS', phone, 'testing scheduling');
+	}
 };
 
 var validateRequests = function () {
@@ -212,6 +215,7 @@ var cron = new Meteor.Cron({
 		// "0 8 * * *" : clearPending,
 		 // "32 12 * * *" : validateRequests,
 		 // "31 12 * * *" : getMenus,
+		"40 4 * * *" : validateRequests,
 	}
 });
 /**********************************/
