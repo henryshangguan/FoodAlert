@@ -104,9 +104,9 @@ var updateHistory = function (json) {
 
 /******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
-	var message = '--MealScout Reminder--';
+	var message = 'MealScout here! Here are your requested foods for today:\n'//--MealScout Reminder--';
 	for (var time in results) {
-		message = message.concat('\n', time, ':\n');
+		message = message.concat('\n', time, '\n');
 		results[time].forEach(function(result) {
 			message = message.concat('Food: ', result['food'],
 						'\nLocation: ', result['location'], '\n');
@@ -284,7 +284,7 @@ Meteor.methods({
 			}
 		}
 		PendingDeletion.insert({number: number, food: food, location: location});
-		Meteor.call("sendSMS", number, "--MealScout Deletion--%0a" + "Food: " + food + "%0aLocation: " + location + "%0aReply 'delete' to confirm deletion or 'save' to cancel deletion." + "\n\n\n\nhi" + "%0a%0a%0ahi again");
+		Meteor.call("sendSMS", number, "--MealScout Deletion--\n" + "Food: " + food + "\nLocation: " + location + "\nReply 'delete' to confirm deletion or 'save' to cancel deletion.");
 		//bootbox.alert({size: 'medium', message: "A message has been sent to your phone. Please respond 'delete' to confirm deletion.", callback: function () {}});
 
 	// var requestToMove = PendingRequests.findOne({number: phone});
