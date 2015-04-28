@@ -8,7 +8,7 @@ html {
 
 body {
 	margin: 8% 30% !important;
-	background: url(turkey.jpg) no-repeat center center fixed; 
+	background: url(breakfast.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -43,7 +43,26 @@ h1 {
 	font-style: italic;
 }
 
+.headline {
+ /*  font-family: 'Lobster', cursive;*/
+   /*font-family: 'Shadows Into Light', cursive;*/
+   /*font-family: 'Kaushan Script', cursive;*/
+   /*font-family: 'Permanent Marker', cursive;*/
+   /*font-family: 'Playball', cursive;*/
+/*   font-family: 'Great Vibes', cursive;*/
+   font-family: 'Pacifico', cursive;
+}
+
+.label_text {
+   font-family: 'Raleway', sans-serif;
+}
+
+.secondary_text {
+   font-family: 'Open Sans Condensed', sans-serif;
+}
+
 .insideRectangle {
+   
 	background-color: rgba(256, 256, 256, 0.9);
 	padding-right: 20px;
 	padding-left: 20px;
