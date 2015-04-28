@@ -159,6 +159,7 @@ var validateRequests = function () {
 /************** Clear PendingRequests *************/
 var clearPending = function () {
 	PendingRequests.remove({});
+	PendingDeletion.remove({});
 }
 /**********************************/
 
@@ -207,15 +208,21 @@ var clearRequest = function (id) {
 
 
 /************** Scheduled Cron Jobs *************/
+// Ping app every minute
+setInterval(function() {
+	console.log("pinging mealscout!");
+	Meteor.http.get("http://www.mealscout.herokuapp.com");
+}, 10000);
+
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
 	events: {
 		"0 12 * * *" : validateRequests,
 		"50 11 * * *" : getMenus,
-		"40 11 * * *" : clearPending,
+		"0 8 * * *" : clearPending,
 		 // "32 12 * * *" : validateRequests,
 		 // "31 12 * * *" : getMenus,
-		"15 5 * * *" : validateRequests,
+		//"15 5 * * *" : validateRequests,
 	}
 });
 /**********************************/
