@@ -209,9 +209,9 @@ var clearRequest = function (id) {
 /************** Scheduled Cron Jobs *************/
 // Ping app every minute
 setInterval(Meteor.bindEnvironment(function() {
-	console.log("pinging mealscout!");
+	//console.log("pinging mealscout!");
 	Meteor.http.get("http://www.princetonmealscout.com");
-}), 20000);
+}), 60000);
 
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
