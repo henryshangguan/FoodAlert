@@ -168,8 +168,8 @@ Template.body.events({
 			message:
 			"<p><b>The dining hall did not actually have my requested food. What gives?</b></p> \
 			<p>Sorry! Sometimes the dining halls have innaccurate menus. We're currently talking with them to try and fix the issue!</p><br> \
-			<p><b>The food search doesn't have the food I want. You guys need to step up your game.</b></p> \
-			<p>First of all, that wasn't a question. We're currently in the process of building our database and everything will be in soon. Please shoot us an email at princetonmealscout@gmail.com with your requested dining hall, menu itmem, and phone number, and we'll enter it for you once our database is finished!</p><br> \
+			<p><b>The food search doesn't have the food I want! You guys need to step up your game.</b></p> \
+			<p>Sorry! We're currently in the process of building our database and everything will be in soon. Please send an email to princetonmealscout@gmail.com with your requested dining hall, menu itmem, and phone number, and we'll enter it for you once our database is finished!</p><br> \
 			<p><b>I love MealScout! How can I contact you/send you gifts?</b></p> \
 			<p>Contact us at princetonmealscout@gmail.com for questions, comments, and suggestions!</p><br>",
 			title: "Frequently Asked Questions",
