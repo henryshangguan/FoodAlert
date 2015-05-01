@@ -24,10 +24,11 @@ PendingRequest = new SimpleSchema({
 	'request.location': {
 		type: String,
 		label: "Dining Hall",
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
+		allowedValues:['Center for Jewish Life', 'Graduate College', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [
 			{label: "Center for Jewish Life", value: "Center for Jewish Life"},
+			{label: "Graduate College", value: "Graduate College"},
 			{label: "Forbes", value: "Forbes"},
 			{label: "Rocky/Mathey", value: "Rocky/Mathey"},
 			{label: "Whitman", value: "Whitman"},
@@ -48,10 +49,11 @@ PartialRequest = new SimpleSchema({
 	location: {
 		type: String,
 		label: 'Dining hall',
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
+		allowedValues:['Center for Jewish Life', 'Graduate College', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', "All"],
 		autoform: {
 			options: [
 			{label: "Center for Jewish Life", value: "Center for Jewish Life"},
+			{label: "Graduate College", value: "Graduate College"},
 			{label: "Forbes", value: "Forbes"},
 			{label: "Rocky/Mathey", value: "Rocky/Mathey"},
 			{label: "Whitman", value: "Whitman"},
@@ -92,7 +94,7 @@ ConfirmedRequest = new SimpleSchema({
 	'requests.$.location': {
 		type: String,
 		label: "Dining Hall",
-		allowedValues:['Center for Jewish Life', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', 'All']
+		allowedValues:['Center for Jewish Life', 'Graduate College', 'Forbes', 'Rocky/Mathey', 'Whitman', 'Wu/Wilcox', 'All']
 	}
 });
 
@@ -255,6 +257,9 @@ Template.form.helpers({
           	var location = AutoForm.getFieldValue("location", "requestForm");
           	if (location === "Forbes") {
           		return {$and: [{'food': regex}, {'Forbes': true}]}
+          	}
+          	else if (location === "Graduate College") {
+          		return {$and: [{'food': regex}, {'Graduate College': true}]}
           	}
           	else if (location === "Center for Jewish Life") {
           		return {$and: [{'food': regex}, {'Center for Jewish Life': true}]}
