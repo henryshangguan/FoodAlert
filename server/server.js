@@ -104,7 +104,7 @@ var updateHistory = function (json) {
 
 /******* Sending Out Requests *********/
 var sendRequests = function(phone, results) {
-	var message = 'MealScout here! Here are your requested foods for today:\n'//--MealScout Reminder--';
+	var message = 'MealScout here! Here are your requested foods for today:'//--MealScout Reminder--';
 	for (var time in results) {
 		message = message.concat('\n', time, '\n');
 		results[time].forEach(function(result) {
@@ -216,9 +216,9 @@ setInterval(Meteor.bindEnvironment(function() {
 // UTC Time: 4 hours ahead of EST
 var cron = new Meteor.Cron({
 	events: {
-		"0 12 * * *" : validateRequests,
-		"0 10 * * *" : getMenus,
-		"0 8 * * *" : clearPending,
+		//"0 12 * * *" : validateRequests,
+		//"0 10 * * *" : getMenus,
+		//"0 8 * * *" : clearPending,
 		 // "32 12 * * *" : validateRequests,
 		 // "31 12 * * *" : getMenus,
 		//"15 5 * * *" : validateRequests,
